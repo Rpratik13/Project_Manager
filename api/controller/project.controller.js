@@ -1,15 +1,30 @@
 const PROJECT_SERVICE = require('../service/project.service');
 
 createProject = (req, res, next) => {
-  let projectData = {
-    id      : req.body.projectId,
-    desc    : req.body.desc,
-    manager : req.body.managerId
-  };
+  req.checkBody('projectId')
+    .notEmpty().withMessage('Project Name is required');
+  req.checkBody('desc')
+    .notEmpty().withMessage('Project Description is required');
+  req.checkBody('managerId')
+    .notEmpty().withMessage('Project Manager is required');
+  
+    let errors = req.validationErrors();
+  if (errors) {
+    res.send({ ...errors[0], status : 400});
+  }
+  else {
+    let projectData = {
+      id      : req.body.projectId,
+      desc    : req.body.desc,
+      manager : req.body.managerId
+    };
 
-  PROJECT_SERVICE.addProject(projectData)
-    .then(response => res.json(response))
-    .catch(err => res.json(err));
+
+
+    PROJECT_SERVICE.addProject(projectData)
+      .then(response => res.json(response))
+      .catch(err => res.json(err));
+  }
 }
 
 updateProject = (req, res, next) => {
@@ -56,11 +71,19 @@ getUserProjects = (req, res, next) => {
     .catch(err => next(err));
 }
 
+getProjectById = (req, res, next) => {
+  let projectId = req.params.projectId;
+  PROJECT_SERVICE.getProjectById(projectId)
+    .then(response => res.json(response))
+    .catch(err => next(err));
+}
+
 module.exports = {
   createProject,
   updateProject,
   deleteProject,
   getAllProjects,
   addUser,
-  getUserProjects
+  getUserProjects,
+  getProjectById
 }

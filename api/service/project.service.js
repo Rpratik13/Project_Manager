@@ -4,9 +4,21 @@ const PROJECT = new PROJECT_MODEL();
 
 function addProject(projectData) {
   return new Promise((resolve, reject) => {
-    PROJECT.addProject(projectData)
-        .then(res => resolve(res))
-        .catch(err => reject(err));
+    PROJECT.getProjectById(projectData.id)
+      .then(res => {
+        if (res.length) {
+          reject({
+            msg : 'Project name already taken',
+            status : 400,
+          })
+        }
+        else {
+          PROJECT.addProject(projectData)
+          .then(res => resolve({msg : 'Project Created', status : 200}))
+          .catch(err => reject(err));
+        }
+      })
+  
   });
 }
 
@@ -21,6 +33,14 @@ function updateProject(newProjectData) {
 function deleteProject(projectId) {
   return new Promise((resolve, reject) => {
     PROJECT.deleteProject(projectId)
+        .then(res => resolve(res))
+        .catch(err => reject(err));
+  });
+}
+
+function getProjectById(projectId) {
+  return new Promise((resolve, reject) => {
+    PROJECT.getProjectById(projectId)
         .then(res => resolve(res))
         .catch(err => reject(err));
   });
@@ -65,5 +85,6 @@ module.exports = {
   deleteProject,
   getAllProjects,
   addUser,
-  getUserProjects
+  getUserProjects,
+  getProjectById
 }

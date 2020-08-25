@@ -8,7 +8,7 @@ const PROJECT_ROUTER = require('./project.route');
 const TASK_ROUTER = require('./task.route');
 const AUTHENTICATE = require('../middleware/authenticate'); 
 
-ROUTER.use('/auth', AUTHENTICATE, AUTH_ROUTER);
+ROUTER.use('/auth', AUTH_ROUTER);
 ROUTER.use('/users', AUTHENTICATE, USER_ROUTER);
 ROUTER.use('/project', AUTHENTICATE, PROJECT_ROUTER);
 ROUTER.use('/task', AUTHENTICATE, TASK_ROUTER);

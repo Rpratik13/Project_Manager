@@ -1,13 +1,19 @@
 // Import Modules
 require('dotenv').config();
 const APP = require('express')();
+const EXPRESS_VALIDATOR = require('express-validator');
 
 // Import Files
 const CONFIG      = require('./config');
 const ROUTES      = require('./route')
 const BODY_PARSER = require('body-parser');
+const CORS        = require('cors');
 
-APP.use(BODY_PARSER.json())
+APP.use(BODY_PARSER.urlencoded({extended : false }));
+APP.use(BODY_PARSER.json());
+APP.use(EXPRESS_VALIDATOR());
+
+APP.use(CORS());
 
 APP.use('/api', ROUTES);
 

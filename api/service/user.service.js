@@ -14,9 +14,26 @@ function addUser(userData, next) {
         }
         else {
           userData = {...userData, password : hash}
-          USER.addUser(userData)
-              .then(res => resolve(res))
-              .catch(err => reject(err));
+          USER.getUserByUsername(userData.username)
+              .then(res => {
+                if (res.length){
+                  reject({
+                    msg: 'Username Already Taken',
+                    status : 400
+                  })
+                }
+                else {
+                  USER.addUser(userData)
+                      .then(res => {
+                        resolve({
+                        msg    : 'Successfully Registered',
+                        status : 200
+                      })
+
+                    })
+                      .catch(err => reject(err));
+                }
+              })
         }
       });
     });
@@ -43,24 +60,38 @@ function loginUser(loginData) {
   return new Promise((resolve, reject) => {
     USER.loginUser(loginData)
       .then(res => {
-        B_CRYPT.compare(loginData.password, res[0].password, function(err, compareResult) {
-          if (err) {
-            reject(err);
-          } 
-          else if (compareResult) {
-            token = TOKEN.createToken(res[0]);
-            result = JSON.parse(JSON.stringify(res[0]));
-            let data = {
-              ...result,
-              token,
-              status : 200
-            };
-            resolve(data);
-          }
-        });
+        if (!res.length) {
+          reject({
+            msg    : 'Invalid Username or Password',
+            status : 400
+          })
+        }
+        else {
+          B_CRYPT.compare(loginData.password, res[0].password, function(err, compareResult) {
+            if (err) {
+              reject(err);
+            } 
+            else if (compareResult) {
+              token = TOKEN.createToken(res[0]);
+              result = JSON.parse(JSON.stringify(res[0]));
+              let data = {
+                ...result,
+                token,
+                status : 200
+              };
+              resolve(data);
+            }
+            else {
+              reject({
+                msg    : 'Invalid Username or Password',
+                status : 400
+              });
+            }
+          });
+        }
       })
       .catch(err => reject(err));
-      });
+    });
 }
 
 function getAllUsers() {

@@ -43,7 +43,7 @@ class Project {
   }
 
   getAllProjects = () => {
-    let sqlQuery = `SELECT project_id FROM final_project.project`;
+    let sqlQuery = `SELECT * FROM final_project.project`;
     return this.executeQuery(sqlQuery);
   }
 
@@ -62,7 +62,11 @@ class Project {
 
   getUserProjects = (username) => {
     let sqlQuery = `SELECT final_project.project.* FROM final_project.project JOIN final_project.project_user ON final_project.project.id = final_project.project_user.project_id WHERE username = '${username}'`;
-    console.log(sqlQuery);
+    return this.executeQuery(sqlQuery);  
+  }
+
+  getProjectById = (projectId) => {
+    let sqlQuery = `SELECT * FROM final_project.project WHERE id = '${projectId}'`;
     return this.executeQuery(sqlQuery);  
   }
 }

@@ -5,11 +5,13 @@ CREATE TABLE final_project.user (
   lname               VARCHAR(30),
   username            VARCHAR(30),
   password            VARCHAR(200),
-  role                VARCHAR(10),
+  role                VARCHAR(25),
   password_is_default BOOLEAN,
 
   PRIMARY KEY (username)
 );
+
+INSERT INTO final_project.user VALUES('admin', 'admin', 'admin', '$2b$10$TzNqWD.7mYB993/KGEIl9ueS73pVpBTAhNsHtU.djrNIb4flprt0a', 'admin', true);
 
 CREATE TABLE final_project.project (
   id           VARCHAR(100),

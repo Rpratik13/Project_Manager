@@ -7,6 +7,7 @@ getUserByRole = (req, res, next) => {
 }
 
 getUserByUsername = (req, res, next) => {
+  console.log(req.params.username);
   USER_SERVICE.getUserByUsername(req.params.username)
     .then(user => res.json(user))
     .catch(err => next(err));
