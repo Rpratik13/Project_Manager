@@ -26,7 +26,6 @@ module.exports = (req, res, next) => {
       next(err);
     }
     else {
-      console.log(decoded);
       req.body.userData = decoded; 
       next();
     }

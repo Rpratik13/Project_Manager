@@ -27,14 +27,12 @@ class Task {
   addTask = (taskData) => {
     let taskDataValues = Object.values(taskData);
     taskDataValues.forEach((data, index) => taskDataValues[index] = `'${taskDataValues[index]}'`);
-    console.log(taskDataValues);
     let sqlQuery = `INSERT INTO final_project.project_task VALUES (${taskDataValues.join(',')})`;
-    console.log(sqlQuery);
     return this.executeQuery(sqlQuery);
   }
 
   updateTask = (newTaskData) => {
-    let sqlQuery = `UPDATE final_project.project_task SET project_id = '${newTaskData.projectId}', task_id = '${newTaskData.taskId}', task_desc = '${newTaskData.desc}', deadline = '${newTaskData.deadline}', assignee = '${newTaskData.assignee}' WHERE task_id = '${newTaskData.oldId}'`;
+    let sqlQuery = `UPDATE final_project.project_task SET project_id = '${newTaskData.projectId}', task_name = '${newTaskData.taskName}', task_desc = '${newTaskData.desc}', deadline = '${newTaskData.deadline}', assignee = '${newTaskData.assignee}' WHERE task_id = '${newTaskData.taskId}'`;
     console.log(sqlQuery);
     return this.executeQuery(sqlQuery);
   }
@@ -51,6 +49,11 @@ class Task {
 
   getAllTasks = (projectId) => {
     let sqlQuery = `SELECT * FROM final_project.project_task WHERE project_id = '${projectId}'`;
+    return this.executeQuery(sqlQuery);
+  }
+
+  getProjectTask = (projectId, taskId) => {
+    let sqlQuery = `SELECT * FROM final_project.project_task WHERE project_id = '${projectId}' AND task_name = '${taskId}'`;
     return this.executeQuery(sqlQuery);
   }
 

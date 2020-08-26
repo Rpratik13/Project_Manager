@@ -21,12 +21,16 @@ class Comment {
 
   addComment = (taskData) => {
     let sqlQuery = `INSERT INTO final_project.task_comment VALUES('${taskData.taskId}', '${taskData.username}', '${taskData.comment}', '${taskData.date}')`;
-    console.log(sqlQuery)
     return this.executeQuery(sqlQuery);
   }
 
   getAllComments = (taskId) => {
     let sqlQuery = `SELECT * FROM final_project.task_comment WHERE task_id = '${taskId}'`;
+    return this.executeQuery(sqlQuery);
+  }
+
+  deleteComment = (commentId) => {
+    let sqlQuery = `DELETE FROM final_project.task_comment WHERE comment_id = '${commentId}'`;
     return this.executeQuery(sqlQuery);
   }
 }

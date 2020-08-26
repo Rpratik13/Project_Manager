@@ -6,6 +6,7 @@ function addProject(projectData) {
   return new Promise((resolve, reject) => {
     PROJECT.getProjectById(projectData.id)
       .then(res => {
+        console.log(res);
         if (res.length) {
           reject({
             msg : 'Project name already taken',
@@ -24,9 +25,17 @@ function addProject(projectData) {
 
 function updateProject(newProjectData) {
   return new Promise((resolve, reject) => {
-    PROJECT.updateProject(newProjectData)
-        .then(res => resolve(res))
-        .catch(err => reject(err));
+    PROJECT.getProjectByIdNotOld(newProjectData.projectId, newProjectData.oldId)
+      .then(res => {
+        if (res.length) {
+          reject({msg : 'Project already exists', status : 400})
+        }
+        else {
+          PROJECT.updateProject(newProjectData)
+              .then(res => resolve({msg : 'Project updated', status : 200}))
+              .catch(err => reject(err));
+        }
+      })
   });
 }
 
@@ -62,6 +71,15 @@ function addUser(projectData) {
   });
 }
 
+
+function removeUser(projectData) {
+  return new Promise((resolve, reject) => {
+    PROJECT.removeUser(projectData)
+        .then(res => resolve(res))
+        .catch(err => reject(err));
+  });
+}
+
 function getUserProjects(username, role) {
   if (role === 'project manager') {
     return new Promise((resolve, reject) => {
@@ -76,7 +94,14 @@ function getUserProjects(username, role) {
           .catch(err => reject(err));
     }); 
   }
-  
+}
+
+function getUser(projectId) {
+  return new Promise((resolve, reject) => {
+    PROJECT.getProjectUser(projectId)
+      .then(res => resolve(res))
+      .catch(err => reject(err))
+  });
 }
 
 module.exports = {
@@ -85,6 +110,8 @@ module.exports = {
   deleteProject,
   getAllProjects,
   addUser,
+  removeUser,
   getUserProjects,
-  getProjectById
+  getProjectById,
+  getUser
 }

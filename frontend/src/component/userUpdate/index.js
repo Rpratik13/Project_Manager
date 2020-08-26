@@ -1,23 +1,29 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import * as registerAction from '../../action/registerAction';
+import * as updateUserAction from '../../action/updateUserAction';
 import { Redirect } from 'react-router-dom';
 
 
-function Register (props) {
-  console.log('redirect', props);
-    if (props.redirectFromRegister || window.localStorage.getItem('role') !== 'admin') {
+function UserUpdate (props) {
+  useEffect(() => {
+    if (props.fetchData) {
+      props.getUserData(props.match.params.username)
+    }
+  })  
+  if (props.redirectFromUpdate || window.localStorage.getItem('role') !== 'admin') {
       return <Redirect to = '/'></Redirect>
     }
+
+
     return (<div className="row">
             <div className = "col-md-offset-5 col-md-4 text-center">
-            <h1 className='text-white'>Register</h1>
+            <h1 className='text-white'>Update User</h1>
             <div className="form-register"><br />
-            {props.registerError && <label>{props.registerError}</label>}
+            {props.error && <label>{props.error}</label>}
             <form 
               onSubmit = { event => {
                 event.preventDefault();
-                props.userRegister(props.registerFname, props.registerLname, props.registerUsername, props.registerPassword, props.registerRole, props.cookies);
+                props.updateUser(props.fname, props.lname, props.username, props.password, props.role, props.oldUsername)
               }}>
               <input 
                 onChange = {event => {
@@ -25,7 +31,7 @@ function Register (props) {
                 }}
                 placeholder = 'Enter First Name'
                 type        = "text" 
-                value       = {props.registerFname} 
+                value       = {props.fname} 
               />
               <br />
               <input 
@@ -34,7 +40,7 @@ function Register (props) {
                 }}
                 placeholder = 'Enter LastName'
                 type        = "text" 
-                value       = {props.registerLname} 
+                value       = {props.lname} 
               />
               <br />
               <input 
@@ -43,7 +49,7 @@ function Register (props) {
                 }}
                 placeholder = 'Enter Username'
                 type        = "text" 
-                value       = {props.registerUsername} 
+                value       = {props.username} 
               />
               <br />
               <input 
@@ -52,7 +58,7 @@ function Register (props) {
                 }}
                 placeholder = 'Enter Password'
                 type        = "password" 
-                value       = {props.registerPassword} 
+                value       = {props.password} 
               />
               <br />
               <select
@@ -70,6 +76,11 @@ function Register (props) {
               <button type="submit"></button>
             </form>
             </div>
+            <form 
+              onSubmit = { event => {
+                event.preventDefault();
+                props.deleteUser(props.oldUsername)
+              }}><button type="submit"></button></form>
           </div>
           </div>
         );
@@ -77,46 +88,56 @@ function Register (props) {
 
 function mapStateToProps (state) {
   return ({
-    registerFname : state.register.registerFname,
-    registerLname : state.register.registerLname,
-    registerRole : state.register.registerRole,
-    registerUsername : state.register.registerUsername,
-    registerPassword : state.register.registerPassword,
-    registerError    : state.register.registerError, 
-    redirectFromRegister : state.register.redirectFromRegister
+    fname : state.updateUser.fname,
+    lname : state.updateUser.lname,
+    role : state.updateUser.role,
+    username : state.updateUser.username,
+    password : state.updateUser.password,
+    error    : state.updateUser.error, 
+    redirectFromUpdate : state.updateUser.redirectFromUpdate,
+    oldUsername : state.updateUser.oldUsername,
+    fetchData   : state.updateUser.fetchData
   });
 }
 
 function mapDispatchToProps (dispatch) {
   return {
     setUsername: registerUsername => {
-      dispatch(registerAction.setUsername(registerUsername));
+      dispatch(updateUserAction.setUsername(registerUsername));
     },
     
     setPassword: registerPassword => {
-      dispatch(registerAction.setPassword(registerPassword));
+      dispatch(updateUserAction.setPassword(registerPassword));
     },
 
     setFname: fname => {
-      dispatch(registerAction.setFname(fname));
+      dispatch(updateUserAction.setFname(fname));
     },
 
     setLname: lname => {
-      dispatch(registerAction.setLname(lname));
+      dispatch(updateUserAction.setLname(lname));
     },
 
     setRole: role => {
-      dispatch(registerAction.setRole(role));
-    },
-
-    userRegister: (fname, lname, username, password, role, cookie) => {
-      dispatch(registerAction.userRegister(fname, lname, username, password, role, cookie))
+      dispatch(updateUserAction.setRole(role));
     },
 
     redirect: () => {
-      dispatch(registerAction.redirect(false));
+      dispatch(updateUserAction.redirect(false));
+    },
+
+    getUserData: username => {
+      dispatch(updateUserAction.getUserData(username))
+    },
+
+    updateUser : (fname, lname, username, password, role, oldUsername) => {
+      dispatch(updateUserAction.updateUser(fname, lname, username, password, role, oldUsername))
+    },
+
+    deleteUser : (username) => {
+      dispatch(updateUserAction.deleteUser(username))
     }
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Register);
+export default connect(mapStateToProps, mapDispatchToProps)(UserUpdate);

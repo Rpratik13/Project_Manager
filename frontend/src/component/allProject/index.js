@@ -5,9 +5,11 @@ import * as allProjectAction from '../../action/allProjectAction';
 
 function createDiv(project) {
   return (<div style = {{width : '100%', marginBottom : '10px'}}>
-           <div>
-             {project.id}
-            </div>
+           <a href = {`/dashboard/projects/${project.id}`}>
+             <div>
+               {project.id}
+              </div>
+            </a>
            <div>
              {project.project_desc}
             </div>

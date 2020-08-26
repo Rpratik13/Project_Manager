@@ -25,7 +25,14 @@ getAllComments = (req, res, next) => {
     .catch(err => next(err));
 }
 
+deleteComment = (req, res, next) => {
+  COMMENT_SERVICE.deleteComment(req.body.commentId)
+    .then(response => res.json(response))
+    .catch(err => next(err))
+}
+
 module.exports = {
   addComment,
+  deleteComment,
   getAllComments
 }

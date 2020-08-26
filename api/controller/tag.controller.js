@@ -3,12 +3,13 @@ const TAG_SERVICE = require('../service/tag.service');
 tagUser = (req, res, next) => {
   let taskData = {
     taskId   : req.body.taskId,
-    username : req.body.username
+    username : req.body.username,
+    projectId : req.body.projectId
   }
 
   TAG_SERVICE.tagUser(taskData)
     .then(response => res.json(response))
-    .catch(err => res.json(err));
+    .catch(err => next(err));
 }
 
 removeTag = (req, res, next) => {

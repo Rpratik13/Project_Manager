@@ -119,9 +119,21 @@ function updateUser(newUserData) {
         }
         else {
           newUserData = {...newUserData, password : hash}
-          USER.updateUser(newUserData)
-              .then(res => resolve(res))
-              .catch(err => reject(err));
+          USER.getUserByUsernameNotOld(newUserData.username, newUserData.oldUsername)
+              .then(res => {
+                if (res.length){
+                  reject({
+                    msg: 'Username Already Taken',
+                    status : 400
+                  })
+                }
+                else {
+                  USER.updateUser(newUserData)
+                      .then(res => resolve({msg : 'Updated', status : 200}))
+                      .catch(err => reject(err));
+
+              }
+            });
         }
       });
     });

@@ -55,6 +55,11 @@ class Project {
     return this.executeQuery(sqlQuery);
   }
 
+  removeUser = (projectData) => {
+    let sqlQuery = `DELETE FROM final_project.project_user WHERE project_id = '${projectData.project_id}' AND username = '${projectData.username}'`;
+    return this.executeQuery(sqlQuery);
+  }
+
   getProjectManagerProjects = (username) => {
     let sqlQuery = `SELECT * FROM final_project.project WHERE username = '${username}'`;
     return this.executeQuery(sqlQuery);
@@ -62,6 +67,21 @@ class Project {
 
   getUserProjects = (username) => {
     let sqlQuery = `SELECT final_project.project.* FROM final_project.project JOIN final_project.project_user ON final_project.project.id = final_project.project_user.project_id WHERE username = '${username}'`;
+    return this.executeQuery(sqlQuery);  
+  }
+
+  getUser = (projectId, username) => {
+    let sqlQuery = `SELECT * FROM final_project.project_user WHERE username = '${username}' AND project_id = '${projectId}'`;
+    return this.executeQuery(sqlQuery);    
+  }
+
+  getProjectUser = (projectId) => {
+    let sqlQuery = `SELECT * FROM final_project.project_user WHERE project_id = '${projectId}'`;
+    return this.executeQuery(sqlQuery);
+  }
+  
+  getProjectByIdNotOld = (projectId, oldId) => {
+    let sqlQuery = `SELECT * FROM final_project.project WHERE id = '${projectId}' AND id <> '${oldId}'`;
     return this.executeQuery(sqlQuery);  
   }
 

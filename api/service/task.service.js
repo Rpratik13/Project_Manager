@@ -4,16 +4,24 @@ const TASK = new TASK_MODEL();
 
 function addTask(taskData) {
   return new Promise((resolve, reject) => {
-    TASK.addTask(taskData)
-        .then(res => resolve(res))
-        .catch(err => reject(err));
+    TASK.getProjectTask(taskData.project_id, taskData.task_id)
+      .then(res => {
+        if (res.length) {
+        reject({msg : 'Task already exists', status : 400})
+        } else {
+          TASK.addTask(taskData)
+              .then(res => resolve({msg : 'Task Created', status : 200}))
+              .catch(err => reject(err));
+        }
+      })
+      .catch(err => reject(err));
   });
 }
 
 function updateTask(newTaskData) {
   return new Promise((resolve, reject) => {
     TASK.updateTask(newTaskData)
-        .then(res => resolve(res))
+        .then(res => resolve({msg : 'Task Updated', status : 200}))
         .catch(err => reject(err));
   });
 }

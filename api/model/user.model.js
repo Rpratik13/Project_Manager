@@ -49,7 +49,7 @@ class User {
   }
 
   getAllUsers = () => {
-    let sqlQuery = 'SELECT * FROM final_project.user';
+    let sqlQuery = `SELECT * FROM final_project.user WHERE role <> 'admin'`;
     return this.executeQuery(sqlQuery);
   }
 
@@ -66,7 +66,11 @@ class User {
   updateUser = (newUserData) => {
     console.log(newUserData);
     let sqlQuery = `UPDATE final_project.user SET fname = '${newUserData.fname}', lname = '${newUserData.lname}', username = '${newUserData.username}', password = '${newUserData.password}', role = '${newUserData.role}' WHERE username = '${newUserData.oldUsername}'`;
-    console.log(sqlQuery);
+    return this.executeQuery(sqlQuery);
+  }
+
+  getUserByUsernameNotOld = (newUsername, oldUsername) => {
+    let sqlQuery = `SELECT * FROM final_project.user WHERE username = '${newUsername}' AND username <> '${oldUsername}'`;
     return this.executeQuery(sqlQuery);
   }
 }

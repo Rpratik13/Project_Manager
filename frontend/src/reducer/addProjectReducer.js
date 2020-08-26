@@ -9,7 +9,7 @@ const INITIAL_STATE = {
   addProjectRedirect : false,
 };
 
-function registerReducer(state = INITIAL_STATE, action) {
+function addProjectReducer(state = INITIAL_STATE, action) {
   switch(action.type) {
     case addProjectAction.SET_PROJECT_NAME:
       return {
@@ -54,4 +54,4 @@ function registerReducer(state = INITIAL_STATE, action) {
 }
 
 
-export default registerReducer;
+export default addProjectReducer;

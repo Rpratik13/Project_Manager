@@ -42,11 +42,12 @@ CREATE TABLE final_project.project_user (
 
 CREATE TABLE final_project.project_task (
   project_id VARCHAR(100),
-  task_id    VARCHAR(100),
+  task_name    VARCHAR(100),
   task_desc  VARCHAR(200),
   deadline   DATE,
   assignee   VARCHAR(30),
-  
+  task_id SERIAL,
+
   PRIMARY KEY (task_id),
   
   FOREIGN KEY (project_id)
@@ -56,7 +57,7 @@ CREATE TABLE final_project.project_task (
 );
 
 CREATE TABLE final_project.task_tag (
-  task_id  VARCHAR(100),
+  task_id  INT,
   username VARCHAR(30),
   
   FOREIGN KEY (task_id)
@@ -70,11 +71,12 @@ CREATE TABLE final_project.task_tag (
 );
 
 CREATE TABLE final_project.task_comment (
-  task_id      VARCHAR(100),
+  task_id      INT,
   username     VARCHAR(30),
   comment_text VARCHAR,
   date         DATE,
   completed    BOOLEAN,
+  comment_id   SERIAL,
   
   FOREIGN KEY (task_id)
     REFERENCES final_project.project_task(task_id)

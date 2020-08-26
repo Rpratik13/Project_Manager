@@ -32,13 +32,27 @@ updateProject = (req, res, next) => {
     id      : req.body.projectId,
     desc    : req.body.desc,
     manager : req.body.managerId,
-    oldId   : req.body.oldId
+    oldId   : req.body.oldId,
+    oldManager : req.body.oldManager,
   };
-
-  PROJECT_SERVICE.updateProject(newProjectData)
-    .then(response => res.json(response))
-    .catch(err => res.json(err));
-}
+  
+  req.checkBody('projectId')
+    .notEmpty().withMessage('Project Name is required');
+  req.checkBody('desc')
+    .notEmpty().withMessage('Project Description is required');
+  req.checkBody('managerId')
+    .notEmpty().withMessage('Project Manager is required');
+  
+  let errors = req.validationErrors();
+  if (errors) {
+    res.send({ ...errors[0], status : 400});
+  }
+  else {
+    PROJECT_SERVICE.updateProject(newProjectData)
+      .then(response => res.json(response))
+      .catch(err => res.json(err)); 
+    }
+  }
 
 deleteProject = (req, res, next) => {
   let projectId = req.body.projectId;
@@ -58,8 +72,17 @@ addUser = (req, res, next) => {
     project_id : req.body.projectId,
     username   : req.body.username
   }
-
   PROJECT_SERVICE.addUser(projectData)
+    .then(response => res.json(response))
+    .catch(err => res.json(err));
+}
+
+removeUser = (req, res, next) => {
+  let projectData = {
+    project_id : req.body.projectId,
+    username   : req.body.username
+  }
+  PROJECT_SERVICE.removeUser(projectData)
     .then(response => res.json(response))
     .catch(err => res.json(err));
 }
@@ -78,12 +101,21 @@ getProjectById = (req, res, next) => {
     .catch(err => next(err));
 }
 
+getUser = (req, res, next) => {
+  let projectId = req.params.projectId;
+  PROJECT_SERVICE.getUser(projectId)
+    .then(response => res.json(response))
+    .catch(err => next(err))
+}
+
 module.exports = {
   createProject,
   updateProject,
   deleteProject,
   getAllProjects,
   addUser,
+  removeUser,
   getUserProjects,
-  getProjectById
+  getProjectById,
+  getUser
 }

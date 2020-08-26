@@ -18,7 +18,17 @@ function getAllComments(taskId) {
   });
 }
 
+function deleteComment(commentId) {
+  return new Promise((resolve, reject) => {
+    COMMENT.deleteComment(commentId)
+        .then(res => resolve(res))
+        .catch(err => reject(err));
+  });
+}
+
+
 module.exports = {
   addComment,
-  getAllComments
+  getAllComments,
+  deleteComment
 }

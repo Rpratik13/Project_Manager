@@ -2,14 +2,14 @@ import React from 'react';
 import './nav.css';
 import { Redirect } from 'react-router-dom';
 
-function Nav (props) {
+function Nav () {
   if (!window.localStorage.getItem('username')) {
     return <Redirect to ="/login" />;
   }
   return (
           <div>
             <div id="mySidenav" className="sidenav">
-        <a 
+        <div 
            className = "closebtn" 
            onClick   = {(event) => {
               event.preventDefault();
@@ -17,13 +17,12 @@ function Nav (props) {
             }}
         >
           &times;
-        </a>
+        </div>
         <span>{window.localStorage.getItem('username')}</span>
         {window.localStorage.getItem('role') === 'admin' && <a href="/dashboard/register">Add User</a>}
         {window.localStorage.getItem('role') === 'admin' && <a href="/dashboard/addProject">Add Project</a>}
         {(window.localStorage.getItem('role') === 'admin' || window.localStorage.getItem('role') === 'project manager' ) && <a href="/dashboard/allProjects">All Project</a>}
-        <a href="#">Services</a>
-        <a href="#">Clients</a>
+        <a href="/dashboard/users/all">All Users</a>
         <div onClick = { () => {
                 window.localStorage.setItem('username', '')
                 window.localStorage.setItem('fname', '')
