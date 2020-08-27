@@ -15,11 +15,11 @@ function AddProject (props) {
     if (props.addProjectRedirect || window.localStorage.getItem('role') !== 'admin') {
       return <Redirect to = '/'></Redirect>
     }
-    return (<div className="row">
-            <div className = "col-md-offset-5 col-md-4 text-center">
-            <h1 className='text-white'>Add a Project</h1>
+    return (<div >
+            <div className = "col-md-offset-5 col-md-4 text-center mx-auto"  style={{paddingTop: "50px"}}>
+            <h1 className='text-black'>Add a Project</h1>
             <div className="form-register"><br />
-            {props.addProjectError && <label>{props.addProjectError}</label>}
+            {props.addProjectError && <label style={{color:"red"}}>{props.addProjectError}</label>}
             <form 
               onSubmit = { event => {
                 event.preventDefault();
@@ -29,6 +29,7 @@ function AddProject (props) {
                 onChange = {event => {
                   props.setProjectName(event.target.value)
                 }}
+                className = "form-control"
                 placeholder = 'Enter ProjectName'
                 type        = "text" 
                 value       = {props.addProjectName} 
@@ -39,12 +40,12 @@ function AddProject (props) {
                   props.setProjectDesc(event.target.value)
                 }}
                 placeholder = 'Enter project description'
-                value       = {props.addProjectDesc} 
+                value       = {props.addProjectDesc}
+                className = "form-control"
               />
               <br />
-              <br />
               <select
-              className = "type" 
+              className = "form-control" 
               id       = "type" 
               name     = "type"
               onChange = {event => { 
@@ -54,7 +55,7 @@ function AddProject (props) {
               <option selected disabled>Choose Project Manager</option>
               {props.projectManagers.map(manager => createOption(manager))}
             </select>
-              <button type="submit"></button>
+              <button type="submit" className="btn btn-primary mt-2">Create</button>
             </form>
             </div>
           </div>

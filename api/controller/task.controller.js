@@ -7,8 +7,6 @@ createTask = (req, res, next) => {
     .notEmpty().withMessage('Task Description is required');
   req.checkBody('deadline')
     .notEmpty().withMessage('Deadline is required');
-  req.checkBody('assignee')
-    .notEmpty().withMessage('Task Assignee is required');
     
   let errors = req.validationErrors();
   if (errors) {
@@ -20,7 +18,7 @@ createTask = (req, res, next) => {
     task_id    : req.body.taskId,
     desc       : req.body.desc,
     deadline   : req.body.deadline,
-    assignee   : req.body.assignee || null,
+    assignee   : req.body.assignee,
   };
   TASK_SERVICE.addTask(taskData)
     .then(response => res.json(response))
@@ -29,29 +27,28 @@ createTask = (req, res, next) => {
 }
 
 updateTask = (req, res, next) => {
-  let newTaskData = {
-    projectId  : req.body.projectId,
-    taskId     : req.body.taskId,
-    desc       : req.body.desc,
-    deadline   : req.body.deadline,
-    assignee   : req.body.assignee || null, 
-    taskName      : req.body.taskName
-  };
-  
   req.checkBody('taskName')
     .notEmpty().withMessage('Task Name is required');
   req.checkBody('desc')
     .notEmpty().withMessage('Task Description is required');
   req.checkBody('deadline')
     .notEmpty().withMessage('Deadline is required');
-  req.checkBody('assignee')
-    .notEmpty().withMessage('Task Assignee is required');
     
   let errors = req.validationErrors();
   if (errors) {
     res.send({ ...errors[0], status : 400});
   }
   else {
+    let newTaskData = {
+      projectId  : req.body.projectId,
+      taskId     : req.body.taskId,
+      desc       : req.body.desc,
+      deadline   : req.body.deadline,
+      assignee   : req.body.assignee, 
+      taskName      : req.body.taskName,
+      oldAssignee : req.body.previousAssignee
+    };
+    console.log(newTaskData);
     TASK_SERVICE.updateTask(newTaskData)
       .then(response => res.json(response))
       .catch(err => res.json(err));

@@ -3,6 +3,7 @@ export const BASE_URL = "http://localhost:5000/api";
 export const endPoints = {
   addComment  : '/task/comment/add',
   addTag      : '/task/tag/add',
+  getTaggedTask      : '/task/tag/user/',
   addTask     : '/task/create',
   addUser     : '/project/adduser',
   allUsers    : '/users/all',
@@ -22,5 +23,6 @@ export const endPoints = {
   updateTask  : '/task/update',
   userByRole  : '/users/role/',
   userDelete  : '/users/delete',
+  userProjects : '/users/projects',
   userUpdate  : '/users/update',
 };

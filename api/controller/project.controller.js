@@ -89,13 +89,14 @@ removeUser = (req, res, next) => {
 
 getUserProjects = (req, res, next) => {
   let user = req.body.userData;
+  console.log(user);
   PROJECT_SERVICE.getUserProjects(user.username, user.role)
     .then(response => res.json(response))
     .catch(err => next(err));
 }
 
 getProjectById = (req, res, next) => {
-  let projectId = req.params.projectId;
+  let projectId = req.params.projectId || req.body.projectId;
   PROJECT_SERVICE.getProjectById(projectId)
     .then(response => res.json(response))
     .catch(err => next(err));

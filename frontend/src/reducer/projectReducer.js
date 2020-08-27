@@ -1,5 +1,4 @@
 import * as projectAction from '../action/projectAction';
-import project from '../component/project';
 
 const INITIAL_STATE = {
   projectData : [],
@@ -7,6 +6,8 @@ const INITIAL_STATE = {
   projectUsers       : [],
   users : [],
   addUser: '',
+  taggedTasks : [],
+  redirect : false,
 };
 
 function projectReducer(state = INITIAL_STATE, action) {
@@ -15,6 +16,12 @@ function projectReducer(state = INITIAL_STATE, action) {
       return {
         ...state,
         addUser : action.payload
+      }
+
+    case projectAction.SET_REDIRECT:
+      return {
+        ...state,
+        redirect : action.payload
       }
 
     case projectAction.SET_PROJECT_DATA:
@@ -34,6 +41,13 @@ function projectReducer(state = INITIAL_STATE, action) {
         ...state,
         users : [...state.users, ...action.payload],
       };
+
+      
+    case projectAction.SET_TAGGED_TASKS:
+      return {
+        ...state,
+        taggedTasks : action.payload
+      }
 
     case projectAction.SET_PROJECT_USERS:
       return {

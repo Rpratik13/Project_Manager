@@ -15,9 +15,9 @@ function UserUpdate (props) {
     }
 
 
-    return (<div className="row">
-            <div className = "col-md-offset-5 col-md-4 text-center">
-            <h1 className='text-white'>Update User</h1>
+    return (<div style={{position:"relative", width: "100%"}}>
+            <div className = "col-md-offset-5 col-md-4 text-center mx-auto" style={{paddingTop: "40px"}}>
+            <h1>Update User</h1>
             <div className="form-register"><br />
             {props.error && <label>{props.error}</label>}
             <form 
@@ -32,6 +32,7 @@ function UserUpdate (props) {
                 placeholder = 'Enter First Name'
                 type        = "text" 
                 value       = {props.fname} 
+                className   = "form-control"
               />
               <br />
               <input 
@@ -41,6 +42,7 @@ function UserUpdate (props) {
                 placeholder = 'Enter LastName'
                 type        = "text" 
                 value       = {props.lname} 
+                className   = "form-control"
               />
               <br />
               <input 
@@ -50,6 +52,7 @@ function UserUpdate (props) {
                 placeholder = 'Enter Username'
                 type        = "text" 
                 value       = {props.username} 
+                className   = "form-control"
               />
               <br />
               <input 
@@ -59,6 +62,7 @@ function UserUpdate (props) {
                 placeholder = 'Enter Password'
                 type        = "password" 
                 value       = {props.password} 
+                className   = "form-control"
               />
               <br />
               <select
@@ -68,20 +72,22 @@ function UserUpdate (props) {
               onChange = {event => { 
                 props.setRole(event.target.value)
               }}
+              className   = "form-control"
             >
               <option key="project manager" value = "project manager">Project Manager</option>
               <option key="team lead" value = "team lead">Team Lead</option>
               <option key="engineer" value = "engineer">Engineer</option>
             </select>
-              <button type="submit"></button>
+              <button type="submit" className="btn btn-primary mt-2">Update</button>
             </form>
             </div>
+            </div>
             <form 
+              style={{position: "absolute", top: "20px", right:"20px"}}
               onSubmit = { event => {
                 event.preventDefault();
                 props.deleteUser(props.oldUsername)
-              }}><button type="submit"></button></form>
-          </div>
+              }}><button type="submit" className="btn btn-danger">Delete</button></form>
           </div>
         );
 }

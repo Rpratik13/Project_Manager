@@ -7,12 +7,7 @@ authorizeUpdate = (req, res, next) => {
       if (user.role !== 'engineer' ||
           (user.role === 'engineer' && response.length && response[0].assignee == user.username)
          ) {
-           if (user.role === 'engineer') {
-             console.log(req.body);
-             res.body.taskId = response[0].task_id;
-             res.body.projectId = response[0].project_id;
-             res.body.assignee  = response[0].assignee;
-           }
+           console.log('here');
         next()
       }
       else {
@@ -27,7 +22,6 @@ authorizeUpdate = (req, res, next) => {
 
 authorizeAssignUser = (req, res, next) => {
   let user = req.body.userData;
-
   if (user.role == 'project manager' || user.role == 'team lead') {
     next();
   }
@@ -39,21 +33,19 @@ authorizeAssignUser = (req, res, next) => {
   }
 }
 
-authorizeTaskDetail = (req, res, next) => {
+authorizeCreate = (req, res, next) => {
   let user = req.body.userData;
   if (user.role === 'engineer') {
     next({
-      msg    : 'Not authorized',
+      msg : 'Not authorized',
       status : 400
     })
-  }
-  else {
+  } else {
     next();
   }
 }
-
 module.exports = {
   authorizeUpdate,
   authorizeAssignUser,
-  authorizeTaskDetail
+  authorizeCreate
 }

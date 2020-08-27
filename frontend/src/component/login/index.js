@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import * as loginAction from '../../action/loginAction';
 import { Redirect } from 'react-router-dom';
+import './style.css'
 
 
 
@@ -9,16 +10,17 @@ function Login (props) {
   if (window.localStorage.getItem('username') || props.loginRedirect) {
     return <Redirect to = "/dashboard" />
   }
-  return (<div className="row">
-            <div className = "col-md-offset-5 col-md-4 text-center">
-            <h1 className='text-white'>Login</h1>
+  return (<div>
+            <div className = "login-form mx-auto col-md-offset-5 col-md-4">
+            <h1 className='text-black'>Login</h1>
             <div className="form-login"><br />
-            {props.loginError && <label>{props.loginError}</label>}
+            {props.loginError && <label style={{color : "red"}}>{props.loginError}</label>}
             <form 
               onSubmit = { event => {
                 event.preventDefault();
                 props.login(props.loginUsername, props.loginPassword);
               }}>
+              <div class="form-group">
               <input 
                 onChange = {event => {
                   props.setUsername(event.target.value)
@@ -26,8 +28,10 @@ function Login (props) {
                 placeholder = 'Enter Username'
                 type        = "text" 
                 value       = {props.loginUsername} 
+                className="form-control" 
               />
-              
+              </div>
+              <div class="form-group">
               <input 
                 onChange = {event => {
                   props.setPassword(event.target.value)
@@ -35,8 +39,10 @@ function Login (props) {
                 placeholder = 'Enter Password'
                 type        = "password" 
                 value       = {props.loginPassword} 
+                className="form-control" 
               />
-              <button type="submit"></button>
+              </div>
+              <button type="submit" className="btn btn-primary">Log In</button>
             </form>
             </div>
           </div>

@@ -8,10 +8,28 @@ const INITIAL_STATE = {
   taskAssignees : [],
   updateTaskError  : '',
   updateTaskRedirect : false,
+  projectData : [],
+  oldTaskAssignee : '',
+  previousAssignee : '',
 };
 
 function updateTaskReducer(state = INITIAL_STATE, action) {
   switch(action.type) {
+    case updateTaskAction.SET_PREVIOUS_ASSIGNEE:
+      return {
+        ...state,
+        previousAssignee: action.payload
+      }
+    case updateTaskAction.SET_TASK_OLD_ASSIGNEE:
+      return {
+        ...state,
+        oldTaskAssignee : action.payload
+      }
+    case updateTaskAction.SET_PROJECT_DATA:
+      return {
+        ...state,
+        projectData : action.payload
+      }
     case updateTaskAction.SET_TASK_NAME:
       return {
         ...state,

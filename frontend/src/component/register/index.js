@@ -9,9 +9,9 @@ function Register (props) {
     if (props.redirectFromRegister || window.localStorage.getItem('role') !== 'admin') {
       return <Redirect to = '/'></Redirect>
     }
-    return (<div className="row">
-            <div className = "col-md-offset-5 col-md-4 text-center">
-            <h1 className='text-white'>Register</h1>
+    return (<div>
+            <div className = "col-md-offset-5 col-md-4 text-center mx-auto" style={{paddingTop: "40px"}}>
+            <h1>Add New User</h1>
             <div className="form-register"><br />
             {props.registerError && <label>{props.registerError}</label>}
             <form 
@@ -25,7 +25,8 @@ function Register (props) {
                 }}
                 placeholder = 'Enter First Name'
                 type        = "text" 
-                value       = {props.registerFname} 
+                value       = {props.registerFname}
+                className   = "form-control" 
               />
               <br />
               <input 
@@ -35,6 +36,7 @@ function Register (props) {
                 placeholder = 'Enter LastName'
                 type        = "text" 
                 value       = {props.registerLname} 
+                className   = "form-control"
               />
               <br />
               <input 
@@ -43,7 +45,8 @@ function Register (props) {
                 }}
                 placeholder = 'Enter Username'
                 type        = "text" 
-                value       = {props.registerUsername} 
+                value       = {props.registerUsername}
+                className   = "form-control"
               />
               <br />
               <input 
@@ -53,12 +56,14 @@ function Register (props) {
                 placeholder = 'Enter Password'
                 type        = "password" 
                 value       = {props.registerPassword} 
+                className   = "form-control"
               />
               <br />
               <select
               className = "type" 
               id       = "type" 
               name     = "type"
+              className   = "form-control"
               onChange = {event => { 
                 props.setRole(event.target.value)
               }}
@@ -67,7 +72,7 @@ function Register (props) {
               <option key="team lead" value = "team lead">Team Lead</option>
               <option key="engineer" value = "engineer">Engineer</option>
             </select>
-              <button type="submit"></button>
+              <button type="submit" className="btn btn-primary mt-3">Add User</button>
             </form>
             </div>
           </div>

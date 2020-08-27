@@ -8,5 +8,5 @@ ROUTER.get('/role/:role', USER_CONTROLLER.getUserByRole);
 ROUTER.get('/all', AUTHORIZE_PROJECT.authorizeAdmin, USER_CONTROLLER.getAllUsers);
 ROUTER.post('/delete', AUTHORIZE_PROJECT.authorizeAdmin, USER_CONTROLLER.deleteUser);
 ROUTER.post('/update', AUTHORIZE_PROJECT.authorizeAdmin, USER_CONTROLLER.updateUser);
-ROUTER.post('/projects', PROJECT_CONTROLLER.getUserProjects);
+ROUTER.get('/projects', PROJECT_CONTROLLER.getUserProjects);
 module.exports = ROUTER;

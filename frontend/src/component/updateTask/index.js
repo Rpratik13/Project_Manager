@@ -15,22 +15,33 @@ function UpdateTask (props) {
     let taskId = (QS.parse(props.location.search).taskId);
     useEffect(() => {
       props.getProjectUsers(projectId);
+      props.getProjectData(projectId);
       props.getTaskData(taskId);
     }, []);
-
-    if (props.updateTaskRedirect || window.localStorage.getItem('role') !== 'admin') {
+    let projectUsers = []
+    props.taskAssignees.forEach(assignee => projectUsers.push(assignee.username))
+    if (props.updateTaskRedirect ||
+      (window.localStorage.getItem('role') === 'team lead' && !projectUsers.includes(window.localStorage.getItem('username')) && props.taskName !== '') ||
+      (window.localStorage.getItem('role') !== 'admin') 
+      && (props.projectData.length && props.projectData[0].manager_id !== window.localStorage.getItem('username'))
+      && (window.localStorage.getItem('role') !== 'team lead' && props.oldTaskAssignee !== (window.localStorage.getItem('username')))
+      && props.taskName !== '') {
       return <Redirect to = '/'></Redirect>
     }
+    let oldAssignee = props.previousAssignee;
+    if (props.taskAssignee !== props.oldTaskAssignee) {
+      oldAssignee = props.oldTaskAssignee;
+    }
 
-    return (<div className="row">
-            <div className = "col-md-offset-5 col-md-4 text-center">
-            <h1 className='text-white'>Update Task</h1>
+    return (<div style={{position:"relative", width: "100%"}}>
+            <div className = "col-md-offset-5 col-md-4 text-center mx-auto" style={{paddingTop: "40px"}}>
+            <h1>Update Task</h1>
             <div className="form-register"><br />
             {props.updateTaskError && <label>{props.updateTaskError}</label>}
             <form 
               onSubmit = { event => {
                 event.preventDefault();
-                props.updateTask(projectId, props.taskName, props.taskDesc, props.taskDeadline, props.taskAssignee, taskId);
+                props.updateTask(projectId, props.taskName, props.taskDesc, props.taskDeadline, props.taskAssignee, oldAssignee, taskId);
               }}>
               <input 
                 onChange = {event => {
@@ -39,6 +50,7 @@ function UpdateTask (props) {
                 placeholder = 'Enter Task Name'
                 type        = "text" 
                 value       = {props.taskName} 
+                className   = "form-control"
               />
               <br />
               <textarea
@@ -47,19 +59,22 @@ function UpdateTask (props) {
                 }}
                 placeholder = 'Enter task description'
                 value       = {props.taskDesc} 
+                className   = "form-control"
               />
+              <br />
               <input 
                 onChange = {event => {
                   props.setTaskDeadline(event.target.value)
                 }}
                 value = {props.taskDeadline}
+                className   = "form-control"
                 type = "date"/>
-              <br />
               <br />
               <select
               className = "type" 
               id       = "type" 
               name     = "type"
+              className   = "form-control"
               onChange = {event => { 
                 props.setTaskAssignee(event.target.value)
               }}
@@ -67,16 +82,17 @@ function UpdateTask (props) {
               <option selected disabled>Choose Task Assignee</option>
               {props.taskAssignees.map(manager => createOption(manager))}
             </select>
-              <button type="submit"></button>
+              <button type="submit" className="btn btn-primary mt-2">Update</button>
             </form>
+            </div>
+            </div>
           <form onSubmit = {(event) => {
             event.preventDefault();
             props.deleteTask(taskId)
-            }} >
-              <button type = "submit"></button>
+            }}
+            style={{position:"absolute", top:"20px", right:"20px"}} >
+              <button type = "submit" className="btn btn-danger">Delete</button>
             </form>
-            </div>
-          </div>
           </div>
         );
 }
@@ -89,7 +105,10 @@ function mapStateToProps (state) {
     taskAssignee : state.updateTask.taskAssignee,
     taskAssignees : state.updateTask.taskAssignees,
     updateTaskError  : state.updateTask.updateTaskError,
-    updateTaskRedirect : state.updateTask.updateTaskRedirect
+    updateTaskRedirect : state.updateTask.updateTaskRedirect,
+    projectData : state.updateTask.projectData,
+    oldTaskAssignee : state.updateTask.oldTaskAssignee,
+    previousAssignee : state.updateTask.previousAssignee
   });
 }
 
@@ -115,12 +134,16 @@ function mapDispatchToProps (dispatch) {
       dispatch(updateTaskAction.getProjectUsers(projectId));
     },
 
-    updateTask: (projectId, taskName, taskDesc, taskDeadline, taskAssignee, taskId) => {
-      dispatch(updateTaskAction.updateTask(projectId, taskName, taskDesc, taskDeadline, taskAssignee, taskId))
+    updateTask: (projectId, taskName, taskDesc, taskDeadline, taskAssignee, oldAssignee, taskId) => {
+      dispatch(updateTaskAction.updateTask(projectId, taskName, taskDesc, taskDeadline, taskAssignee, oldAssignee, taskId))
     },
 
     getTaskData : (taskId) => {
       dispatch(updateTaskAction.getTaskData(taskId));
+    },
+
+    getProjectData : (projectId) => {
+      dispatch(updateTaskAction.getProjectData(projectId));
     },
 
     deleteTask : (taskId) => {

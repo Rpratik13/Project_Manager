@@ -9,18 +9,47 @@ function createOption(manager) {
  return <option key={manager.username} value={manager.username}>{manager.username}</option>
 }
 
+function showSelectProjectManager(props) {
+  if (window.localStorage.getItem('role') === 'admin') {
+    return (<select
+      className = "type" 
+      id       = "type" 
+      name     = "type"
+      className   = "form-control"
+      onChange = {event => { 
+        props.setProjectManager(event.target.value)
+      }}
+    >
+      <option selected disabled>Choose Project Manager</option>
+      {props.projectManagers.map(manager => createOption(manager))}
+    </select>)
+  }
+}
+
+function showDeleteButton(props, projectId) {
+  if (window.localStorage.getItem('role') === 'admin') 
+  return  <form onSubmit = {(event) => {
+    event.preventDefault()
+    props.deleteProject(projectId)}}
+    style={{position:"absolute", top:"20px", right:"20px"}}>
+    <button type = "submit" className="btn btn-danger">Delete</button>
+  </form>
+}
 function UpdateProject (props) {
     let projectId = (QS.parse(props.location.search).projectId);
     useEffect(() => {
       props.getProjectData(projectId);
       props.getManagers();
     }, []);
-    if (props.updateProjectRedirect || window.localStorage.getItem('role') !== 'admin') {
+    if (props.updateProjectRedirect || 
+      (window.localStorage.getItem('role') !== 'admin' && 
+      (window.localStorage.getItem('role') !== 'project manager') ||(
+      (window.localStorage.getItem('role') === 'project manager') && props.updateProjectManager !== window.localStorage.getItem('username') && props.updateProjectManager))) {
       return <Redirect to = '/'></Redirect>
     }
-    return (<div className="row">
-            <div className = "col-md-offset-5 col-md-4 text-center">
-            <h1 className='text-white'>Update Project</h1>
+    return (<div style={{position:"relative", width: "100%"}}>
+            <div className = "col-md-offset-5 col-md-4 text-center mx-auto" style={{paddingTop : "50px"}}>
+            <h1>Update Project</h1>
             <div className="form-register"><br />
             {props.updateProjectError && <label>{props.updateProjectError}</label>}
             <form 
@@ -35,6 +64,7 @@ function UpdateProject (props) {
                 placeholder = 'Enter Project Name'
                 type        = "text" 
                 value       = {props.updateProjectName} 
+                className   = "form-control"
               />
               <br />
               <textarea
@@ -42,30 +72,16 @@ function UpdateProject (props) {
                   props.setProjectDesc(event.target.value)
                 }}
                 placeholder = 'Enter project description'
-                value       = {props.updateProjectDesc} 
+                value       = {props.updateProjectDesc}
+                className   = "form-control" 
               />
               <br />
-              <br />
-              <select
-              className = "type" 
-              id       = "type" 
-              name     = "type"
-              onChange = {event => { 
-                props.setProjectManager(event.target.value)
-              }}
-            >
-              <option selected disabled>Choose Project Manager</option>
-              {props.projectManagers.map(manager => createOption(manager))}
-            </select>
-              <button type="submit"></button>
-            </form>
-            <form onSubmit = {(event) => {
-              event.preventDefault()
-              props.deleteProject(projectId)}}>
-              <button type = "submit"/>
+              {showSelectProjectManager(props)}
+              <button type="submit" className="btn btn-primary mt-2">Update</button>
             </form>
             </div>
           </div>
+              {showDeleteButton(props, projectId)}
           </div>
         );
 }

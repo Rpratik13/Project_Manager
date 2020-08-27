@@ -14,6 +14,35 @@ export const SET_PROJECT_USERS = 'SET_PROJECT_USERS';
 export const SET_ADD_USER = 'SET_ADD_USER';
 export const REMOVE_USER = 'REMOVE_USER'
 
+export const GET_TAGGED_TASKS = 'GET_TAGGED_TASKS';
+export const SET_TAGGED_TASKS = 'SET_TAGGED_TASKS';
+export const SET_REDIRECT = 'SET_REDIRECT'
+
+
+export const setRedirect = () => {
+  return ({
+    type : SET_REDIRECT,
+    payload : true
+  })
+}
+export const getTaggedTasks = (username) => {
+  return function action(dispatch) {
+    dispatch({
+      type : GET_TAGGED_TASKS
+    })
+    return httpUtils.get(config.endPoints.getTaggedTask + username)
+                .then(res => {
+                  if (res.length) {
+                  dispatch({
+                    type : SET_TAGGED_TASKS,
+                    payload : res
+                  })
+                }
+            })
+  }
+}
+
+
 export const setAddUser = (username) => {
   return ({
     type : SET_ADD_USER,
@@ -62,11 +91,15 @@ export const getUsers = (projectId) => {
     })
     return httpUtils.get(config.endPoints.projectUser + projectId)
                 .then(res => {
-                  console.log(res)
                   if (res.length) {
                   dispatch({
                     type : SET_PROJECT_USERS,
                     payload : res
+                  })
+
+                  dispatch({
+                    type : SET_REDIRECT,
+                    payload : true
                   })
                 }
             })

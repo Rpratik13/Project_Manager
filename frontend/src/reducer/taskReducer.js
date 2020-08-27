@@ -47,6 +47,7 @@ function taskReducer(state = INITIAL_STATE, action) {
         newComment : action.payload
       }
 
+      
     default:
       return state;
   }

@@ -15,14 +15,15 @@ function AddTask (props) {
     useEffect(() => {
       props.getProjectUsers(projectId);
     }, []);
-    if (props.addTaskRedirect || window.localStorage.getItem('role') !== 'admin') {
-      return <Redirect to = '/'></Redirect>
+    if (props.addTaskRedirect || window.localStorage.getItem('role') === 'engineer') {
+      return <Redirect to = {`/dashboard/projects/${projectId}`}></Redirect>
     }
-    return (<div className="row">
-            <div className = "col-md-offset-5 col-md-4 text-center">
-            <h1 className='text-white'>Add a Project</h1>
+    return (<div>
+            <div className = "mx-auto col-md-offset-5 col-md-4 text-center" style={{paddingTop: "50px"}}>
+            <h1 className='text-black'>Add a Task</h1>
+            <h2>{projectId}</h2>
             <div className="form-register"><br />
-            {props.addTaskError && <label>{props.addTaskError}</label>}
+            {props.addTaskError && <label style={{color : "red"}}>{props.addTaskError}</label>}
             <form 
               onSubmit = { event => {
                 event.preventDefault();
@@ -34,6 +35,7 @@ function AddTask (props) {
                 }}
                 placeholder = 'Enter Task Name'
                 type        = "text" 
+                className = "form-control"
                 value       = {props.taskName} 
               />
               <br />
@@ -43,16 +45,18 @@ function AddTask (props) {
                 }}
                 placeholder = 'Enter task description'
                 value       = {props.taskDesc} 
+                className = "form-control"
               />
               <input 
                 onChange = {event => {
                   props.setTaskDeadline(event.target.value)
                 }}
+                className = "form-control mt-3"
                 type = "date"/>
               <br />
               <br />
               <select
-              className = "type" 
+              className = "form-control" 
               id       = "type" 
               name     = "type"
               onChange = {event => { 
@@ -62,7 +66,7 @@ function AddTask (props) {
               <option selected disabled>Choose Task Assignee</option>
               {props.taskAssignees.map(manager => createOption(manager))}
             </select>
-              <button type="submit"></button>
+              <button type="submit" className="btn btn-primary mt-3">Add Task</button>
             </form>
             </div>
           </div>

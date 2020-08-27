@@ -11,6 +11,7 @@ import allUserReducer from './allUserReducer';
 import updateUserReducer from './updateUserReducer';
 import updateProjectReducer from './updateProjectReducer';
 import updateTaskReducer from './updateTaskReducer';
+import myProjectReducer from './myProjectReducer';
 
 const reducer = combineReducers({
   login : loginReducer,
@@ -24,6 +25,7 @@ const reducer = combineReducers({
   updateUser : updateUserReducer,
   updateProject : updateProjectReducer,
   updateTask : updateTaskReducer,
+  myProject : myProjectReducer
 });
 
 export default reducer;

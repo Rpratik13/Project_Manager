@@ -12,8 +12,19 @@ import AllUser from './component/allUser';
 import UserUpdate from './component/userUpdate';
 import UpdateProject from './component/updateProject';
 import UpdateTask from './component/updateTask';
+import MyProject from './component/myProject';
 
 import { Route, BrowserRouter as Router, Redirect } from 'react-router-dom';
+
+
+function setDashboard() {
+  let userRole = window.localStorage.getItem('role');
+  if (userRole === 'team lead' || userRole === 'engineer') {
+    return <Route exact path="/dashboard" component={() => <MyProject />} />
+  } else {
+    return <Route exact path="/dashboard/" component={() => <AllProject />} />
+  }
+}
 
 function App(props) {
   return (
@@ -32,6 +43,7 @@ function App(props) {
         <Route path="/dashboard/users/all" render={(props) => <AllUser {...props} />}/> 
         <Route path="/dashboard/user/:username" render={(props) => <UserUpdate {...props} />}/>
         <Route path="/dashboard/updateTask" render={(props) => <UpdateTask {...props} />}/> 
+        {setDashboard()}
       </Router>
     </div>
   );

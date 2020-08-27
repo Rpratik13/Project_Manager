@@ -64,6 +64,7 @@ export const updateProject = (projectName, projectDesc, projectManager, oldName,
                       oldManager : projectManager !== oldManager? oldManager : ''
                     })
                    .then(res => {
+                     console.log(res);
                      if (res.status === 400)  {
                        dispatch({
                           type    : UPDATE_PROJECT_ERROR,
@@ -97,6 +98,10 @@ export const getProjectData = (projectId) => {
                   dispatch({
                     type : SET_PROJECT_DESC,
                     payload : res[0].project_desc
+                  })
+                  dispatch({
+                    type : SET_PROJECT_MANAGER,
+                    payload : res[0].manager_id
                   })
               }
             })

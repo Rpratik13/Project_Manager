@@ -1,31 +1,41 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import * as allProjectAction from '../../action/allProjectAction';
+import { Redirect } from 'react-router-dom';
 
+function showProjectTitle(project) {
+  if (project.manager_id === window.localStorage.getItem('username') || window.localStorage.getItem('role') === 'admin') {
+    return (<a href = {`/dashboard/projects/${project.id}`}>
+              <div>Project Title: {project.id}</div>
+            </a>)
+  }
+  return <div>Project Title: {project.id}</div>
+}
 
 function createDiv(project) {
-  return (<div style = {{width : '100%', marginBottom : '10px'}}>
-           <a href = {`/dashboard/projects/${project.id}`}>
-             <div>
-               {project.id}
-              </div>
-            </a>
+  return (<div style = {{width : '100%', marginBottom : '10px'}} className = "list-group-item list-group-item-secondary">
+           {showProjectTitle(project)}
            <div>
-             {project.project_desc}
+             Description: {project.project_desc}
             </div>
            <div>
-             {project.manager_id}
+             Manager: {project.manager_id}
             </div>
           </div>
  );
 }
 
-function AddProject (props) {
+function AllProject (props) {
     useEffect(() => {
       props.getProjects();
     }, []);
+    let userRole = window.localStorage.getItem('role');
+    if (userRole !== 'admin' && userRole !== 'project manager'){
+      return <Redirect to ="/"/>
+    }
 
-    return (<div className="row">
+    return (<div>
+            <h1>All Projects</h1>
             {props.projects.map(project => createDiv(project))}
           </div>
         );
@@ -45,4 +55,4 @@ function mapDispatchToProps (dispatch) {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(AddProject);
+export default connect(mapStateToProps, mapDispatchToProps)(AllProject);

@@ -34,6 +34,11 @@ class Tag {
     return this.executeQuery(sqlQuery);
   }
 
+  getTaggedTasks = (username) => {
+    let sqlQuery = `SELECT * FROM final_project.task_tag WHERE username = '${username}'`;
+    return this.executeQuery(sqlQuery);
+  }
+
   
   getTaggedUser = (taskId, username) => {
     let sqlQuery = `SELECT * from final_project.task_tag WHERE task_id = '${taskId}' AND username = '${username}'`;

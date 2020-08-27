@@ -10,7 +10,8 @@ function Nav () {
           <div>
             <div id="mySidenav" className="sidenav">
         <div 
-           className = "closebtn" 
+           className = "closebtn"
+           style = {{cursor:"pointer"}} 
            onClick   = {(event) => {
               event.preventDefault();
               document.getElementById("mySidenav").style.width = 0 + 'px'
@@ -18,12 +19,17 @@ function Nav () {
         >
           &times;
         </div>
-        <span>{window.localStorage.getItem('username')}</span>
+        <span className="nav-text">{window.localStorage.getItem('username')}</span>
+        <br/><br/><br/>
         {window.localStorage.getItem('role') === 'admin' && <a href="/dashboard/register">Add User</a>}
         {window.localStorage.getItem('role') === 'admin' && <a href="/dashboard/addProject">Add Project</a>}
-        {(window.localStorage.getItem('role') === 'admin' || window.localStorage.getItem('role') === 'project manager' ) && <a href="/dashboard/allProjects">All Project</a>}
-        <a href="/dashboard/users/all">All Users</a>
-        <div onClick = { () => {
+        {(window.localStorage.getItem('role') === 'admin' || window.localStorage.getItem('role') === 'project manager' ) && <a href="/dashboard">All Project</a>}
+        {(window.localStorage.getItem('role') === 'admin') && <a href="/dashboard/users/all">All Users</a>}
+        {(window.localStorage.getItem('role') === 'team lead' || window.localStorage.getItem('role') === 'engineer') && <a href="/dashboard">My Projects</a>}
+        <br/><br/><br/>
+        <div 
+        className="nav-text"
+        onClick = { () => {
                 window.localStorage.setItem('username', '')
                 window.localStorage.setItem('fname', '')
                 window.localStorage.setItem('lname', '')
@@ -32,12 +38,13 @@ function Nav () {
                 window.location.reload(true); 
                 }}>Logout</div>
       </div>
-      <span 
+      <div 
         style   = {{fontSize: '30px' , cursor : 'pointer'}} 
         onClick = {() => document.getElementById("mySidenav").style.width = "250px"}
+        className = 'sidebar-btn'
       >
         &#9776;
-      </span>
+      </div>
     </div>
   );
 }

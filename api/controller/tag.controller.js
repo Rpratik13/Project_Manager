@@ -29,8 +29,15 @@ getAllTags = (req, res, next) => {
     .catch(err => next(err));
 }
 
+getTaggedTasks = (req, res, next) => {
+  TAG_SERVICE.getTaggedTasks(req.params.username)
+    .then(response => res.json(response))
+    .catch(err => next(err))
+}
+
 module.exports = {
   tagUser,
   removeTag,
-  getAllTags
+  getAllTags,
+  getTaggedTasks
 }

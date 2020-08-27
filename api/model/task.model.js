@@ -32,7 +32,7 @@ class Task {
   }
 
   updateTask = (newTaskData) => {
-    let sqlQuery = `UPDATE final_project.project_task SET project_id = '${newTaskData.projectId}', task_name = '${newTaskData.taskName}', task_desc = '${newTaskData.desc}', deadline = '${newTaskData.deadline}', assignee = '${newTaskData.assignee}' WHERE task_id = '${newTaskData.taskId}'`;
+    let sqlQuery = `UPDATE final_project.project_task SET project_id = '${newTaskData.projectId}', task_name = '${newTaskData.taskName}', task_desc = '${newTaskData.desc}', deadline = '${newTaskData.deadline}', assignee = '${newTaskData.assignee}', old_assignee = '${newTaskData.oldAssignee}' WHERE task_id = '${newTaskData.taskId}'`;
     console.log(sqlQuery);
     return this.executeQuery(sqlQuery);
   }

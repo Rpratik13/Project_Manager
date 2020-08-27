@@ -1,5 +1,6 @@
 import * as httpUtils from '../utils/http';
 import * as config from '../configs/appconfig';
+import { SET_REDIRECT } from './projectAction';
 
 export const SET_TASK_NAME    = 'SET_PROJECT_NAME';
 export const SET_TASK_DESC    = 'SET_PROJECT_DESC';
@@ -12,6 +13,10 @@ export const UPDATE_TASK_ERROR = 'UPDATE_TASK_ERROR';
 export const UPDATE_TASK_REDIRECT = 'UPDATE_TASK_REDIRECT';
 export const GET_TASK_DATA = 'GET_TASK_DATA';
 export const DELETE_TASK = 'DELETE_TASK';
+export const GET_PROJECT_DATA = 'GET_PROJECT_DATA';
+export const SET_PROJECT_DATA = 'SET_PROJECT_DATA';
+export const SET_TASK_OLD_ASSIGNEE = 'SET_TASK_OLD_ASSIGNEE';
+export const SET_PREVIOUS_ASSIGNEE = 'SET_PREVIOUS_ASSIGNEE';
 
 export const setTaskName = taskName => ({
   payload : taskName,
@@ -52,7 +57,24 @@ export const getProjectUsers = (projectId) => {
 } 
 
 
-export const updateTask = (projectId, taskName, taskDesc, taskDeadline, taskAssignee, taskId) => {
+export const getProjectData = (projectId) => {
+  return function action(dispatch) {
+    dispatch({
+      type : GET_PROJECT_DATA
+    })
+    return httpUtils.get(config.endPoints.projectById + projectId)
+            .then(res => {
+              if (res.length) {
+                  dispatch({
+                    type : SET_PROJECT_DATA,
+                    payload : res
+                  })
+              }
+            })
+  }
+} 
+
+export const updateTask = (projectId, taskName, taskDesc, taskDeadline, taskAssignee, oldAssignee, taskId) => {
   return function action(dispatch) {
     dispatch({
       type : ADD_TASK
@@ -63,7 +85,8 @@ export const updateTask = (projectId, taskName, taskDesc, taskDeadline, taskAssi
       desc : taskDesc,
       deadline : taskDeadline,
       assignee : taskAssignee,
-      taskName : taskName
+      taskName : taskName,
+      previousAssignee : oldAssignee,
     })
                 .then(res => {
                   console.log(res);
@@ -92,13 +115,33 @@ export const getTaskData = (taskId) => {
            .then(res => {
              if (res && res.length) {
               dispatch({
-                type : SET_TASK_NAME,
-                payload : res[0].task_name
+                type : SET_TASK_DESC,
+                payload : res[0].task_desc
               })
 
               dispatch({
-                type : SET_TASK_DESC,
-                payload : res[0].task_desc
+                type : SET_TASK_ASSIGNEE,
+                payload : res[0].assignee
+              })
+
+              dispatch({
+                type : SET_TASK_OLD_ASSIGNEE,
+                payload : res[0].assignee
+              })
+
+              dispatch({
+                type : SET_PREVIOUS_ASSIGNEE,
+                payload : res[0].old_assignee
+              })
+
+              dispatch({
+                type : SET_TASK_NAME,
+                payload : res[0].task_name
+              })
+             } else {
+              dispatch({
+                type : SET_REDIRECT,
+                payload : true
               })
              }
            })

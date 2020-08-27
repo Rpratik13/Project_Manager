@@ -2,30 +2,34 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import * as allUserAction from '../../action/allUserAction';
 
-
+function firstUpperCase(val) {
+  return val.charAt(0).toUpperCase() + val.slice(1)
+}
 function createDiv(user) {
-  return (<div style = {{width : '100%', marginBottom : '10px'}}>
+  return (<div style = {{width : '100%', marginBottom : '10px'}} className = "list-group-item list-group-item-secondary">
            <a href = {`/dashboard/user/${user.username}`}>
              <div>
-               {`${user.fname} ${user.lname}`}
+               {`${firstUpperCase(user.fname)} ${firstUpperCase(user.lname)}`}
               </div>
             </a>
            <div>
-             {user.username}
+             Username: {user.username}
             </div>
            <div>
-             {user.role}
+             Role: {firstUpperCase(user.role)}
             </div>
           </div>
  );
 }
 
 function AllUser (props) {
+  console.log(props);
     useEffect(() => {
       props.getAllUsers();
     }, []);
 
-    return (<div className="row">
+    return (<div>
+            <h1>All Users</h1> 
             {props.users.map(user => createDiv(user))}
           </div>
         );

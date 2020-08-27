@@ -45,8 +45,17 @@ function getAllTags(taskId) {
   });
 }
 
+function getTaggedTasks(username) {
+  return new Promise((resolve, reject) => {
+    TAG.getTaggedTasks(username)
+        .then(res => resolve(res))
+        .catch(err => reject(err));
+  });
+}
+
 module.exports = {
   tagUser,
   removeTag,
   getAllTags,
+  getTaggedTasks
 }

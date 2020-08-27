@@ -46,6 +46,7 @@ CREATE TABLE final_project.project_task (
   task_desc  VARCHAR(200),
   deadline   DATE,
   assignee   VARCHAR(30),
+  old_assignee VARCHAR(30) DEFAULT '',
   task_id SERIAL,
 
   PRIMARY KEY (task_id),

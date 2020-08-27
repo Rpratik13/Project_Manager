@@ -6,26 +6,47 @@ const QS = require('query-string');
   
 
   function showTag(props, tag, taskId) {
-    return (<div onClick={() => {
+    return (<span 
+      className="badge badge-primary mr-1"
+      style = {{cursor:"pointer"}}
+      onClick={() => {
       props.removeTag(tag.username, taskId)
       window.location.reload(true);
-    }}>{tag.username}</div>)
+    }}>{tag.username}</span>)
   }
 
+  function showCommentDeleteButton(comment, props) {
+    if (comment.username === window.localStorage.getItem('username')) {
+      return (<form onSubmit = {(event) => {
+      event.preventDefault()
+      props.deleteComment(comment.comment_id);
+      window.location.reload(true);
+    }}>
+      <button type = "submit" className="btn btn-danger">Delete</button>
+    </form>
+      )}}
+      
   function showComment(comment, props) {
-    return (<div>
-             <div>{comment.username}</div>
+    return (<div className="list-group-item list-group-item-secondary">
              <div>{comment.comment_text}</div>
+             <div>Commented By: {comment.username}</div>
              <div>{comment.date}</div>
-             <form onSubmit = {(event) => {
-               event.preventDefault()
-               props.deleteComment(comment.comment_id);
-               window.location.reload(true);
-             }}>
-               <button type = "submit"></button>
-             </form>
+             
+             {showCommentDeleteButton(comment, props)}
       </div>)
   }
+
+  function showUpdate(props) {
+    if ((window.localStorage.getItem('role') === 'engineer' && props.taskData.assignee === window.localStorage.getItem('username')) ||
+    (window.localStorage.getItem('role') !== 'engineer'))
+      return <a href = {`/dashboard/updateTask?taskId=${props.taskData.task_id}&&projectId=${props.taskData.project_id}`}><button className="btn btn-primary">Update</button></a>
+  }
+
+  function showPreviousAssignee(props) {
+    if (props.taskData.old_assignee) {
+      return <div>Previous Assignee: {props.taskData.old_assignee}</div>
+    }
+  }  
 
   function Task (props) {
     let taskId = QS.parse(props.location.search).taskId;
@@ -33,10 +54,10 @@ const QS = require('query-string');
       props.getTaskData(taskId);
       props.getTaskComments(taskId);
       props.getTaskTags(taskId);
+      
     }, []);
-  
-  return (<div className="row">
-            {props.addTagError && <div>{props.addTagError}</div>}
+  return (<div className="mx-auto" style={{width: "70%", paddingTop: "50px"}}>
+            {props.addTagError && <div style={{color : "red"}}>{props.addTagError}</div>}
             <form onSubmit = {event => {
               event.preventDefault();
               props.addTag(props.taskData.project_id, taskId, props.newTag);
@@ -45,15 +66,19 @@ const QS = require('query-string');
                  type="text"
                  value = {props.newTag}
                  onChange = {(event) => props.setNewTag(event.target.value)}
+                 className = "form-control"
+                 placeholder = "Tag a user"
                />
             </form>
             {props.tags.map(tag => showTag(props, tag, taskId))}
-             <div>
-               <div>{props.taskData.task_name}</div>
-               <div>{props.taskData.task_desc}</div>
-               <div>{props.taskData.assignee}</div>
-               <div>{props.taskData.deadline}</div>
-               <a href = {`/dashboard/updateTask?taskId=${props.taskData.task_id}&&projectId=${props.taskData.project_id}`}>Update</a>
+             <div className = "list-group-item list-group-item-success mt-2 mb-3">
+               <div>Task Name: {props.taskData.task_name}</div>
+               <div>Description: {props.taskData.task_desc}</div>
+               <div>Assigned To: {props.taskData.assignee}</div>
+               <div>Deadline: {props.taskData.deadline}</div>
+               {showPreviousAssignee(props)}
+
+               {showUpdate(props)}
              </div>
              <form onSubmit = {event => {
               event.preventDefault();
@@ -64,6 +89,8 @@ const QS = require('query-string');
                  type="text"
                  value = {props.newComment}
                  onChange = {(event) => props.setNewComment(event.target.value)}
+                 className="form-control"
+                 placeholder = "Add a comment"
                />
             </form>
             {props.comments.map(comment => showComment(comment, props))}

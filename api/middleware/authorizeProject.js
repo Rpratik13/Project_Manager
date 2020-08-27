@@ -15,11 +15,13 @@ function authorizeAdmin(req, res, next) {
 
 function authorizeUpdate(req, res, next) {
   let user = req.body.userData;
+
   if (user.role === 'admin') {
     next()
   } 
   else if (user.role === 'project manager') {
-    TASK_SERVICE.getProjectById(req.body.projectId)
+
+    PROJECT_SERVICE.getProjectById(req.body.oldId)
       .then(response => {
         if (response.length && response[0].manager_id === user.username) {
           next();
@@ -37,12 +39,12 @@ function authorizeUpdate(req, res, next) {
 
 authorizeAddUser = (req, res, next) => {
   let user = req.body.userData;
-
+ 
   if (user.role === 'admin') {
     next()
   }
   else if (user.role === 'project manager') {
-    TASK_SERVICE.getProjectById(req.body.projectId)
+    PROJECT_SERVICE.getProjectById(req.body.projectId)
       .then(response => {
         if (response.length && response[0].manager_id === user.username) {
           next();
