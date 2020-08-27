@@ -6,6 +6,7 @@ A project manager application
 2. `yarn start` or `npm start` in api folder.
 3. `yarn start` or `npm start` in frontend folder.
 4. Go to `localhost:3000/dashboard`.
+5. Admin Login username : admin, password : admin
 
 **Requirements**
 1. PostgreSQL
