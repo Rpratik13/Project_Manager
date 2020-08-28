@@ -48,7 +48,6 @@ updateTask = (req, res, next) => {
       taskName      : req.body.taskName,
       oldAssignee : req.body.previousAssignee
     };
-    console.log(newTaskData);
     TASK_SERVICE.updateTask(newTaskData)
       .then(response => res.json(response))
       .catch(err => res.json(err));

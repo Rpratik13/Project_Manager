@@ -1,4 +1,5 @@
 import * as taskAction from '../action/taskAction';
+import * as authAction from '../action/authAction';
 
 const INITIAL_STATE = {
   taskData : [],
@@ -11,6 +12,9 @@ const INITIAL_STATE = {
 
 function taskReducer(state = INITIAL_STATE, action) {
   switch(action.type) {
+    case authAction.LOGOUT:
+      return { ...INITIAL_STATE }
+      
     case taskAction.SET_TASK_DATA:
       return {
         ...state,

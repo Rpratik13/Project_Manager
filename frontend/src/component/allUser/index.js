@@ -6,7 +6,7 @@ function firstUpperCase(val) {
   return val.charAt(0).toUpperCase() + val.slice(1)
 }
 function createDiv(user) {
-  return (<div style = {{width : '100%', marginBottom : '10px'}} className = "list-group-item list-group-item-secondary">
+  return (<div style = {{width : '100%', marginBottom : '10px'}} key={user.username} className = "list-group-item list-group-item-secondary">
            <a href = {`/dashboard/user/${user.username}`}>
              <div>
                {`${firstUpperCase(user.fname)} ${firstUpperCase(user.lname)}`}
@@ -23,10 +23,10 @@ function createDiv(user) {
 }
 
 function AllUser (props) {
-  console.log(props);
+    let getAllUsers = props.getAllUsers;
     useEffect(() => {
-      props.getAllUsers();
-    }, []);
+      getAllUsers();
+    }, [getAllUsers]);
 
     return (<div>
             <h1>All Users</h1> 

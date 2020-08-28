@@ -89,7 +89,6 @@ export const updateTask = (projectId, taskName, taskDesc, taskDeadline, taskAssi
       previousAssignee : oldAssignee,
     })
                 .then(res => {
-                  console.log(res);
               if (res.status === 400)  {
                 dispatch({
                   type    : UPDATE_TASK_ERROR,

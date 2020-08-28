@@ -1,7 +1,6 @@
 import * as config from "../configs/appconfig";
 
 export function get(endpoint) {
-  console.log(`${config.BASE_URL}${endpoint}`)
   return fetch(`${config.BASE_URL}${endpoint}`, {
     method : 'GET',
     headers: {
@@ -13,7 +12,6 @@ export function get(endpoint) {
 }
 
 export function post(endpoint, body) {
-  console.log(`${config.BASE_URL}${endpoint}`)
   return fetch(`${config.BASE_URL}${endpoint}`, {
     method : 'POST',
     headers: {

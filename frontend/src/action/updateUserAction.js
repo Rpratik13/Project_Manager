@@ -95,7 +95,6 @@ export const updateUser = (fname, lname, username, password, role, oldUsername) 
                     oldUsername : oldUsername
                   })
             .then(res => {
-              console.log(res)
               if (res.status === 400)  {
                 dispatch({
                   type    : UPDATE_ERROR,
@@ -109,7 +108,6 @@ export const updateUser = (fname, lname, username, password, role, oldUsername) 
                 })
               }
             })
-            .catch(err => console.log(err));
   }
 }
 
@@ -127,6 +125,5 @@ export const deleteUser = (username) => {
                   payload : true
                 })
             })
-            .catch(err => console.log(err));
   }
 }

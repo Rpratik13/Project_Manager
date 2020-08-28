@@ -64,7 +64,6 @@ export const updateProject = (projectName, projectDesc, projectManager, oldName,
                       oldManager : projectManager !== oldManager? oldManager : ''
                     })
                    .then(res => {
-                     console.log(res);
                      if (res.status === 400)  {
                        dispatch({
                           type    : UPDATE_PROJECT_ERROR,
@@ -78,7 +77,6 @@ export const updateProject = (projectName, projectDesc, projectManager, oldName,
                       })
                 }
               })
-            .catch(err => console.log(err));
   }
 } 
 
@@ -89,7 +87,6 @@ export const getProjectData = (projectId) => {
     })
     return httpUtils.get(config.endPoints.projectById + projectId)
             .then(res => {
-              console.log(projectId);
               if (res.length) {
                   dispatch({
                     type : SET_PROJECT_NAME,

@@ -50,12 +50,13 @@ const QS = require('query-string');
 
   function Task (props) {
     let taskId = QS.parse(props.location.search).taskId;
+    let {getTaskData, getTaskComments, getTaskTags} = props;
     useEffect(() => {
-      props.getTaskData(taskId);
-      props.getTaskComments(taskId);
-      props.getTaskTags(taskId);
+      getTaskData(taskId);
+      getTaskComments(taskId);
+      getTaskTags(taskId);
       
-    }, []);
+    }, [getTaskData, getTaskComments, getTaskTags, taskId]);
   return (<div className="mx-auto" style={{width: "70%", paddingTop: "50px"}}>
             {props.addTagError && <div style={{color : "red"}}>{props.addTagError}</div>}
             <form onSubmit = {event => {

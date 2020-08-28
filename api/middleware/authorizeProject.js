@@ -68,7 +68,10 @@ authorizeViewAll = (req, res, next) => {
     next();
   }
   else {
-    console.log(req.params);
+    next({
+      msg    : 'Not authorized',
+      status : 400
+    })
   }
 }
 

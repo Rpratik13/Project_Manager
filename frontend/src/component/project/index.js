@@ -5,7 +5,7 @@ import { Redirect } from 'react-router-dom';
 
 
 function showTask(props, task) {
-  return (<div style = {{width : '100%', margin : '10px 0px 0px 10px'}} className = "list-group-item list-group-item-secondary">
+  return (<div key={task.task_name} style = {{width : '100%', margin : '10px 0px 0px 10px'}} className = "list-group-item list-group-item-secondary">
            <a href={`/dashboard/task?taskId=${task.task_id}`}>
              <div>
                Task Name: {task.task_name}
@@ -46,7 +46,7 @@ function showRemove(projectId, user, props) {
   }
 }
 function showUser(projectId, user, props) {
- return (<div  className="list-group-item list-group-item-secondary" style={{margin: '10px 10px 0px 0px'}}>
+ return (<div key={user.username} className="list-group-item list-group-item-secondary" style={{margin: '10px 10px 0px 0px'}}>
     {showRemove(projectId, user, props)}
     <div>{user.username}</div>
     <div>{user.role}</div>
@@ -75,8 +75,9 @@ function showAddUser(props) {
               onChange = {event => { 
                 props.setAddUser(event.target.value)
               }}
+              defaultValue = "Choose User"
             >
-            <option selected disabled>Choose User</option>
+            <option disabled>Choose User</option>
               {props.users.map(user => createOption(props.projectUsers, user))}
             </select>
             <button type="submit" className="btn btn-primary mt-2">Add User</button>
@@ -92,7 +93,6 @@ function showAddTask(projectId) {
 function showTagged(props, taskId) {
   let taskIds = []
   props.taggedTasks.forEach(task => taskIds.push(task.task_id))
-  console.log(taskIds);
   if (taskIds.includes(taskId)){
     return <span>tagged</span>
   }
@@ -106,14 +106,15 @@ function showPreviousAssignee(task) {
 
 function Project (props) {
     let projectId = props.match.params.projectId;
+    let { getEngineer, getTeamLead, getTask, getUsers, getTaggedTasks, getProjectData } = props;
     useEffect(() => {
-      props.getEngineer();
-      props.getTeamLead();
-      props.getProjectData(projectId);
-      props.getTask(projectId);
-      props.getUsers(projectId);
-      props.getTaggedTasks(window.localStorage.getItem('username'));
-    }, []);
+      getEngineer();
+      getTeamLead();
+      getProjectData(projectId);
+      getTask(projectId);
+      getUsers(projectId);
+      getTaggedTasks(window.localStorage.getItem('username'));
+    }, [getEngineer, getTeamLead, getTask, getUsers, getTaggedTasks, getProjectData, projectId]);
     let projectUsernames = [];
     props.projectUsers.forEach(user => projectUsernames.push(user.username));
     if (props.redirect && window.localStorage.getItem('role') !== 'admin' && props.projectData.manager_id !== window.localStorage.getItem('username') && !projectUsernames.includes(window.localStorage.getItem('username')) 

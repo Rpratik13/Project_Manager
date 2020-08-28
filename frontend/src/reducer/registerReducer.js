@@ -1,4 +1,5 @@
 import * as registerAction from '../action/registerAction';
+import * as authAction from '../action/authAction';
 
 const INITIAL_STATE = {
   registerUsername : '',
@@ -12,6 +13,9 @@ const INITIAL_STATE = {
 
 function registerReducer(state = INITIAL_STATE, action) {
   switch(action.type) {
+    case authAction.LOGOUT:
+      return { ...INITIAL_STATE }
+      
     case registerAction.SET_USERNAME:
       return {
         ...state,

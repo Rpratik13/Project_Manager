@@ -1,4 +1,5 @@
 import * as addProjectAction from '../action/addProjectAction';
+import * as authAction from '../action/authAction';
 
 const INITIAL_STATE = {
   addProjectName : '',
@@ -11,6 +12,9 @@ const INITIAL_STATE = {
 
 function addProjectReducer(state = INITIAL_STATE, action) {
   switch(action.type) {
+    case authAction.LOGOUT:
+      return { ...INITIAL_STATE }
+      
     case addProjectAction.SET_PROJECT_NAME:
       return {
         ...state,
@@ -42,7 +46,6 @@ function addProjectReducer(state = INITIAL_STATE, action) {
       };
 
     case addProjectAction.ADD_PROJECT_REDIRECT:
-      console.log(action.payload)
       return {
         ...state,
         addProjectRedirect : action.payload,

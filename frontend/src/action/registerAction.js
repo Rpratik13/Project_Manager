@@ -1,3 +1,6 @@
+import * as httpUtils from '../utils/http';
+import * as config from '../configs/appconfig';
+
 export const SET_FNAME    = 'SET_FNAME';
 export const SET_LNAME    = 'SET_LNAME';
 export const SET_USERNAME = 'SET_USERNAME';
@@ -42,21 +45,13 @@ export const userRegister = (fname, lname, username, password, role, cookie) => 
     dispatch({
       type : USER_REGISTER
     })
-    return fetch('http://localhost:5000/api/auth/register', {
-                  method  : 'POST',
-                  headers : {
-                  'authentication' : window.localStorage.getItem('token'),
-                  'content-type': 'application/json'
-                  },
-                  body    : JSON.stringify({
+    return httpUtils.post(config.endPoints.register, {
                     fname    : fname,
                     lname    : lname,
                     username : username,
                     password : password,
                     role     : role
                   })
-                })
-            .then(res => res.json())
             .then(res => {
               if (res.status === 400)  {
                 dispatch({
@@ -71,6 +66,5 @@ export const userRegister = (fname, lname, username, password, role, cookie) => 
                 })
               }
             })
-            .catch(err => console.log(err));
   }
 } 

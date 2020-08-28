@@ -12,9 +12,10 @@ function createOption(manager) {
 
 function AddTask (props) {
     let projectId = (QS.parse(props.location.search).projectId);
+    let getProjectUsers = props.getProjectUsers;
     useEffect(() => {
-      props.getProjectUsers(projectId);
-    }, []);
+      getProjectUsers(projectId);
+    }, [getProjectUsers, projectId]);
     if (props.addTaskRedirect || window.localStorage.getItem('role') === 'engineer') {
       return <Redirect to = {`/dashboard/projects/${projectId}`}></Redirect>
     }

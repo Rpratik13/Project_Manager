@@ -1,8 +1,11 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import './nav.css';
 import { Redirect } from 'react-router-dom';
+import * as authAction from '../../action/authAction';
 
-function Nav () {
+
+function Nav (props) {
   if (!window.localStorage.getItem('username')) {
     return <Redirect to ="/login" />;
   }
@@ -30,6 +33,7 @@ function Nav () {
         <div 
         className="nav-text"
         onClick = { () => {
+                props.logout();
                 window.localStorage.setItem('username', '')
                 window.localStorage.setItem('fname', '')
                 window.localStorage.setItem('lname', '')
@@ -49,4 +53,17 @@ function Nav () {
   );
 }
 
-export default Nav;
+function mapStateToProps (state) {
+  return ({});
+}
+
+function mapDispatchToProps (dispatch) {
+  return {    
+    logout: () => {
+      dispatch(authAction.logout())
+    }
+  }
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(Nav);

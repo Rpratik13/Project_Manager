@@ -12,15 +12,15 @@ function createOption(manager) {
 function showSelectProjectManager(props) {
   if (window.localStorage.getItem('role') === 'admin') {
     return (<select
-      className = "type" 
       id       = "type" 
       name     = "type"
       className   = "form-control"
       onChange = {event => { 
         props.setProjectManager(event.target.value)
       }}
+      defaultValue = "Choose Project Manager"
     >
-      <option selected disabled>Choose Project Manager</option>
+      <option disabled>Choose Project Manager</option>
       {props.projectManagers.map(manager => createOption(manager))}
     </select>)
   }
@@ -37,14 +37,15 @@ function showDeleteButton(props, projectId) {
 }
 function UpdateProject (props) {
     let projectId = (QS.parse(props.location.search).projectId);
+    let {getProjectData, getManagers} = props;
     useEffect(() => {
-      props.getProjectData(projectId);
-      props.getManagers();
-    }, []);
+      getProjectData(projectId);
+      getManagers();
+    }, [getProjectData, getManagers, projectId]);
     if (props.updateProjectRedirect || 
-      (window.localStorage.getItem('role') !== 'admin' && 
-      (window.localStorage.getItem('role') !== 'project manager') ||(
-      (window.localStorage.getItem('role') === 'project manager') && props.updateProjectManager !== window.localStorage.getItem('username') && props.updateProjectManager))) {
+      (window.localStorage.getItem('role') !== 'admin' &&  
+      ((window.localStorage.getItem('role') !== 'project manager') ||(
+      (window.localStorage.getItem('role') === 'project manager') && props.updateProjectManager !== window.localStorage.getItem('username') && props.updateProjectManager)))) {
       return <Redirect to = '/'></Redirect>
     }
     return (<div style={{position:"relative", width: "100%"}}>

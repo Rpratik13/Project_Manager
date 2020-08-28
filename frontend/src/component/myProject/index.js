@@ -16,9 +16,10 @@ function createDiv(project) {
 }
 
 function MyProject (props) {
+    let getMyProjects = props.getMyProjects;
     useEffect(() => {
-      props.getMyProjects();
-    }, []);
+      getMyProjects();
+    }, [getMyProjects]);
 
     return (<div>
             <h1>Projects</h1>

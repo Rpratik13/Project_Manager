@@ -89,7 +89,6 @@ removeUser = (req, res, next) => {
 
 getUserProjects = (req, res, next) => {
   let user = req.body.userData;
-  console.log(user);
   PROJECT_SERVICE.getUserProjects(user.username, user.role)
     .then(response => res.json(response))
     .catch(err => next(err));

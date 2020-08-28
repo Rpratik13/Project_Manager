@@ -5,7 +5,6 @@ import { Redirect } from 'react-router-dom';
 
 
 function Register (props) {
-  console.log('redirect', props);
     if (props.redirectFromRegister || window.localStorage.getItem('role') !== 'admin') {
       return <Redirect to = '/'></Redirect>
     }
@@ -60,7 +59,6 @@ function Register (props) {
               />
               <br />
               <select
-              className = "type" 
               id       = "type" 
               name     = "type"
               className   = "form-control"

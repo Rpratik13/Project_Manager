@@ -76,6 +76,5 @@ export const addTask = (projectId, taskName, taskDesc, taskDeadline, taskAssigne
                   })
                 }
               })
-            .catch(err => console.log(err));
   }
 } 

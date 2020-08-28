@@ -9,12 +9,15 @@ function createOption(manager) {
 }
 
 function AddProject (props) {
+   let getManagers = props.getManagers;
     useEffect(() => {
-      props.getManagers();
-    }, []);
+      getManagers();
+    }, [getManagers]);
+
     if (props.addProjectRedirect || window.localStorage.getItem('role') !== 'admin') {
       return <Redirect to = '/'></Redirect>
     }
+
     return (<div >
             <div className = "col-md-offset-5 col-md-4 text-center mx-auto"  style={{paddingTop: "50px"}}>
             <h1 className='text-black'>Add a Project</h1>
@@ -51,8 +54,9 @@ function AddProject (props) {
               onChange = {event => { 
                 props.setProjectManager(event.target.value)
               }}
+              defaultValue="Choose Project Manager"
             >
-              <option selected disabled>Choose Project Manager</option>
+              <option disabled>Choose Project Manager</option>
               {props.projectManagers.map(manager => createOption(manager))}
             </select>
               <button type="submit" className="btn btn-primary mt-2">Create</button>

@@ -13,7 +13,7 @@ function showProjectTitle(project) {
 }
 
 function createDiv(project) {
-  return (<div style = {{width : '100%', marginBottom : '10px'}} className = "list-group-item list-group-item-secondary">
+  return (<div style = {{width : '100%', marginBottom : '10px'}} key={project.id} className = "list-group-item list-group-item-secondary">
            {showProjectTitle(project)}
            <div>
              Description: {project.project_desc}
@@ -26,9 +26,10 @@ function createDiv(project) {
 }
 
 function AllProject (props) {
+    let getProjects = props.getProjects;
     useEffect(() => {
-      props.getProjects();
-    }, []);
+      getProjects();
+    }, [getProjects]);
     let userRole = window.localStorage.getItem('role');
     if (userRole !== 'admin' && userRole !== 'project manager'){
       return <Redirect to ="/"/>

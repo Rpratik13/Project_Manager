@@ -34,6 +34,7 @@ function addUser(userData, next) {
                       .catch(err => reject(err));
                 }
               })
+              .catch(err => reject(err))
         }
       });
     });
@@ -133,7 +134,8 @@ function updateUser(newUserData) {
                       .catch(err => reject(err));
 
               }
-            });
+            })
+            .catch(err => reject(err));
         }
       });
     });

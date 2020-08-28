@@ -1,4 +1,5 @@
 import * as projectAction from '../action/projectAction';
+import * as authAction from '../action/authAction';
 
 const INITIAL_STATE = {
   projectData : [],
@@ -12,6 +13,9 @@ const INITIAL_STATE = {
 
 function projectReducer(state = INITIAL_STATE, action) {
   switch(action.type) {
+    case authAction.LOGOUT:
+      return { ...INITIAL_STATE }
+      
     case projectAction.SET_ADD_USER:
       return {
         ...state,

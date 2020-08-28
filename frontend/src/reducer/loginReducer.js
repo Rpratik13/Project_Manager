@@ -1,5 +1,5 @@
 import * as loginAction from '../action/loginAction';
-
+import * as authAction from '../action/authAction';
 
 const INITIAL_STATE = {
   loginUsername : '',
@@ -33,6 +33,8 @@ function loginReducer(state = INITIAL_STATE, action) {
         ...state,
         redirectLogin : action.payload,
       };
+    case authAction.LOGOUT:
+      return { ...INITIAL_STATE }
 
     default:
       return state;

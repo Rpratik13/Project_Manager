@@ -1,3 +1,7 @@
+import * as httpUtils from '../utils/http';
+import * as config from '../configs/appconfig';
+
+
 export const SET_USERNAME = 'SET_USERNAME';
 export const SET_PASSWORD = 'SET_PASSWORD';
 export const USER_LOGIN   = 'USER_LOGIN';
@@ -26,17 +30,10 @@ export const userLogin = (username, password) => {
     dispatch({
       type : USER_LOGIN
     })
-    return fetch('http://localhost:5000/api/auth/login', {
-                  method  : 'POST',
-                  headers : {
-                  'content-type': 'application/json'
-                  },
-                  body    : JSON.stringify({
+    return httpUtils.post(config.endPoints.login, {
                     username : username,
                     password : password,
                   })
-                })
-            .then(res => res.json())
             .then(res => {
               if (res.status === 200) {
                 console.log(res)

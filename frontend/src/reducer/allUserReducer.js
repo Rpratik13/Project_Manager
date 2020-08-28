@@ -1,4 +1,5 @@
 import * as allUserAction from '../action/allUserAction';
+import * as authAction from '../action/authAction';
 
 const INITIAL_STATE = {
   users : [],
@@ -11,6 +12,9 @@ function allUserReducer(state = INITIAL_STATE, action) {
         ...state,
         users : action.payload,
       };
+
+    case authAction.LOGOUT:
+      return { ...INITIAL_STATE }
 
     default:
       return state;

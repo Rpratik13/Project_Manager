@@ -1,3 +1,6 @@
+import * as httpUtils from '../utils/http';
+import * as config from '../configs/appconfig';
+
 export const GET_PROJECTS = 'GET_PROJECTS';
 export const SET_PROJECTS = 'SET_PROJECTS';
 
@@ -6,13 +9,7 @@ export const getProjects = () => {
     dispatch({
       type : GET_PROJECTS
     })
-    return fetch('http://localhost:5000/api/project/all', {
-                  method : 'GET',
-                  headers : {
-                    'authentication' : window.localStorage.getItem('token')
-                  }
-                })
-                .then(res => res.json())
+    return httpUtils.get(config.endPoints.allProjects)
                 .then(res => {
                   if (res.length) {
                   dispatch({

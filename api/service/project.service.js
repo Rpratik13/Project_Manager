@@ -6,7 +6,6 @@ function addProject(projectData) {
   return new Promise((resolve, reject) => {
     PROJECT.getProjectById(projectData.id)
       .then(res => {
-        console.log(res);
         if (res.length) {
           reject({
             msg : 'Project name already taken',

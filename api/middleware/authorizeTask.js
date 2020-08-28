@@ -7,7 +7,6 @@ authorizeUpdate = (req, res, next) => {
       if (user.role !== 'engineer' ||
           (user.role === 'engineer' && response.length && response[0].assignee == user.username)
          ) {
-           console.log('here');
         next()
       }
       else {

@@ -1,5 +1,6 @@
 import * as updateUserAction from '../action/updateUserAction';
-import allUserReducer from './allUserReducer';
+import * as authAction from '../action/authAction';
+
 
 const INITIAL_STATE = {
   username : '',
@@ -15,6 +16,9 @@ const INITIAL_STATE = {
 
 function updateUserReducer(state = INITIAL_STATE, action) {
   switch(action.type) {
+    case authAction.LOGOUT:
+      return {...INITIAL_STATE}
+      
     case updateUserAction.SET_OLD_USERNAME:
       return {
         ...state,

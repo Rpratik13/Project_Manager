@@ -13,19 +13,20 @@ function createOption(manager) {
 function UpdateTask (props) {
     let projectId = (QS.parse(props.location.search).projectId);
     let taskId = (QS.parse(props.location.search).taskId);
+    let {getProjectUsers, getProjectData, getTaskData} = props;
     useEffect(() => {
-      props.getProjectUsers(projectId);
-      props.getProjectData(projectId);
-      props.getTaskData(taskId);
-    }, []);
+      getProjectUsers(projectId);
+      getProjectData(projectId);
+      getTaskData(taskId);
+    }, [getProjectUsers, getProjectData, getTaskData, projectId, taskId]);
     let projectUsers = []
     props.taskAssignees.forEach(assignee => projectUsers.push(assignee.username))
     if (props.updateTaskRedirect ||
       (window.localStorage.getItem('role') === 'team lead' && !projectUsers.includes(window.localStorage.getItem('username')) && props.taskName !== '') ||
-      (window.localStorage.getItem('role') !== 'admin') 
+      ((window.localStorage.getItem('role') !== 'admin') 
       && (props.projectData.length && props.projectData[0].manager_id !== window.localStorage.getItem('username'))
       && (window.localStorage.getItem('role') !== 'team lead' && props.oldTaskAssignee !== (window.localStorage.getItem('username')))
-      && props.taskName !== '') {
+      && props.taskName !== '')) {
       return <Redirect to = '/'></Redirect>
     }
     let oldAssignee = props.previousAssignee;
@@ -71,15 +72,15 @@ function UpdateTask (props) {
                 type = "date"/>
               <br />
               <select
-              className = "type" 
               id       = "type" 
               name     = "type"
               className   = "form-control"
               onChange = {event => { 
                 props.setTaskAssignee(event.target.value)
               }}
+              defaultValue = "Choose Task Assignee"
             >
-              <option selected disabled>Choose Task Assignee</option>
+              <option disabled>Choose Task Assignee</option>
               {props.taskAssignees.map(manager => createOption(manager))}
             </select>
               <button type="submit" className="btn btn-primary mt-2">Update</button>

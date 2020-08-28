@@ -1,4 +1,5 @@
 import * as updateProjectAction from '../action/updateProjectAction';
+import * as authAction from '../action/authAction';
 
 const INITIAL_STATE = {
   updateProjectName : '',
@@ -11,6 +12,9 @@ const INITIAL_STATE = {
 
 function updateProjectReducer(state = INITIAL_STATE, action) {
   switch(action.type) {
+    case authAction.LOGOUT:
+      return { ...INITIAL_STATE }
+      
     case updateProjectAction.SET_PROJECT_NAME:
       return {
         ...state,

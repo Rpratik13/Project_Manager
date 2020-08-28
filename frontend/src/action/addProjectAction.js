@@ -1,3 +1,6 @@
+import * as httpUtils from '../utils/http';
+import * as config from '../configs/appconfig';
+
 export const SET_PROJECT_NAME    = 'SET_PROJECT_NAME';
 export const SET_PROJECT_DESC    = 'SET_PROJECT_DESC';
 export const SET_PROJECT_MANAGER = 'SET_PROJECT_MANAGER';
@@ -28,13 +31,7 @@ export const getManagers = () => {
     dispatch({
       type : GET_MANAGERS
     })
-    return fetch('http://localhost:5000/api/users/role/project manager', {
-      method : 'GET',
-      headers : {
-        'authentication' : window.localStorage.getItem('token')
-      }
-    })
-            .then(res => res.json())
+    return httpUtils.get(config.endPoints.getUserByRole + 'project manager')
             .then(res => {
               if (res.status === 400)  {
                 dispatch({
@@ -51,7 +48,7 @@ export const getManagers = () => {
                 }
               }
             })
-            .catch(err => console.log(err));
+            .catch(err => console.log(err))
   }
 } 
 
@@ -61,19 +58,11 @@ export const addProject = (projectName, projectDesc, projectManager) => {
     dispatch({
       type : ADD_PROJECT
     })
-    return fetch('http://localhost:5000/api/project/create', {
-                  method  : 'POST',
-                  headers : {
-                    'authentication' : window.localStorage.getItem('token'),
-                    'content-type': 'application/json'
-                  },
-                  body : JSON.stringify({
+    return httpUtils.post(config.endPoints.createProject, {
                     projectId : projectName,
                     desc : projectDesc,
                     managerId : projectManager
                   })
-                })
-                .then(res => res.json())
                 .then(res => {
               if (res.status === 400)  {
                 dispatch({
@@ -88,6 +77,6 @@ export const addProject = (projectName, projectDesc, projectManager) => {
                   })
                 }
               })
-            .catch(err => console.log(err));
+              .catch(err => console.log(err))
   }
 } 

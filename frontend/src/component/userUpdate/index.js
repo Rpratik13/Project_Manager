@@ -66,7 +66,6 @@ function UserUpdate (props) {
               />
               <br />
               <select
-              className = "type" 
               id       = "type" 
               name     = "type"
               onChange = {event => { 

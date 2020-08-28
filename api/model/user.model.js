@@ -64,7 +64,6 @@ class User {
   }
 
   updateUser = (newUserData) => {
-    console.log(newUserData);
     let sqlQuery = `UPDATE final_project.user SET fname = '${newUserData.fname}', lname = '${newUserData.lname}', username = '${newUserData.username}', password = '${newUserData.password}', role = '${newUserData.role}' WHERE username = '${newUserData.oldUsername}'`;
     return this.executeQuery(sqlQuery);
   }
