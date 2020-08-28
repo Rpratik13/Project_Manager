@@ -36,7 +36,6 @@ export const userLogin = (username, password) => {
                   })
             .then(res => {
               if (res.status === 200) {
-                console.log(res)
                 window.localStorage.setItem('fname', res.fname)
                 window.localStorage.setItem('lname', res.lname)
                 window.localStorage.setItem('role', res.role)

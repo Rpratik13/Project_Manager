@@ -20,7 +20,7 @@ function Login (props) {
                 event.preventDefault();
                 props.login(props.loginUsername, props.loginPassword);
               }}>
-              <div class="form-group">
+              <div className="form-group">
               <input 
                 onChange = {event => {
                   props.setUsername(event.target.value)
@@ -31,7 +31,7 @@ function Login (props) {
                 className="form-control" 
               />
               </div>
-              <div class="form-group">
+              <div className="form-group">
               <input 
                 onChange = {event => {
                   props.setPassword(event.target.value)
